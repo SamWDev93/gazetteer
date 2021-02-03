@@ -1,5 +1,5 @@
 // Create map
-var mymap = L.map("mapid").setView([51.505, -0.09], 6);
+var mymap = L.map("mapid").setView([0, 0], 2);
 
 // Map tiles
 var Esri_WorldImagery = L.tileLayer(
@@ -20,3 +20,23 @@ var Stamen_TonerHybrid = L.tileLayer(
     ext: "png",
   }
 ).addTo(mymap);
+
+// Populate select field
+$.ajax({
+  url: "libs/php/populateSelect.php",
+  type: "POST",
+  dataType: "json",
+  success: function (result) {
+    $.each(result.data, function (index) {
+      $("#selectCountry").append(
+        $("<option>", {
+          value: result.data[index].code,
+          text: result.data[index].name,
+        })
+      );
+    });
+  },
+  error: function (jqXHR, textStatus, errorThrown) {
+    // your error code
+  },
+});
