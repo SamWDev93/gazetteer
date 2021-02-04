@@ -30,13 +30,35 @@ $.ajax({
     $.each(result.data, function (index) {
       $("#selectCountry").append(
         $("<option>", {
-          value: result.data[index].code,
+          value: result.data[index].iso3,
           text: result.data[index].name,
         })
       );
     });
   },
-  error: function (jqXHR, textStatus, errorThrown) {
-    // your error code
+  error: function (request, status, error) {
+    alert(request.responseText);
   },
+});
+
+// Run restCountries.php
+$("#selectCountry").change(function () {
+  $.ajax({
+    url: "libs/php/restCountries.php",
+    type: "POST",
+    dataType: "json",
+    data: {
+      name: $("#selectCountry").val(),
+    },
+    success: function (result) {
+      console.log(result);
+
+      if (result.status.name == "ok") {
+        $(".test").html(result["data"]["flag"]);
+      }
+    },
+    error: function (request, status, error) {
+      alert(request.responseText);
+    },
+  });
 });
