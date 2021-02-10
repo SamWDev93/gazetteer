@@ -48,13 +48,12 @@ $("#selectCountry").change(function () {
     type: "POST",
     dataType: "json",
     data: {
-      name: $("#selectCountry").val(),
+      code: $("#selectCountry").val(),
     },
     success: function (result) {
       console.log(result);
 
       if (result.status.name == "ok") {
-        $(".test").html(result["data"]["flag"]);
       }
     },
     error: function (request, status, error) {
