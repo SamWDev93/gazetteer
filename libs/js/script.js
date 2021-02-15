@@ -36,15 +36,12 @@ $.ajax({
       );
     });
   },
-  error: function (request, status, error) {
-    alert(request.responseText);
-  },
 });
 
-// Run restCountries.php
+// Run getData.php
 $("#selectCountry").change(function () {
   $.ajax({
-    url: "libs/php/restCountries.php",
+    url: "libs/php/getData.php",
     type: "POST",
     dataType: "json",
     data: {
@@ -54,10 +51,8 @@ $("#selectCountry").change(function () {
       console.log(result);
 
       if (result.status.name == "ok") {
+        $(".test").html(result["data"]);
       }
-    },
-    error: function (request, status, error) {
-      alert(request.responseText);
     },
   });
 });
