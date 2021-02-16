@@ -19,22 +19,25 @@
 
     $rc_decode = json_decode($rc_result,true);
     $rest_countries = null;
-    $rest_countries['iso2'] = $rc_decode['alpha2Code'];
     $rest_countries['name'] = $rc_decode['name'];
     $rest_countries['capital'] = $rc_decode['capital'];
+    $rest_countries['region'] = $rc_decode['region'];
+    $rest_countries['subregion'] = $rc_decode['subregion'];
     $rest_countries['lat'] = $rc_decode['latlng'][0];
     $rest_countries['lng'] = $rc_decode['latlng'][1];
     $rest_countries['population'] = $rc_decode['population'];
+    $rest_countries['demonym'] = $rc_decode['demonym'];
     $rest_countries['area'] = $rc_decode['area'];
     $rest_countries['callCode'] = $rc_decode['callingCodes'][0];
     $rest_countries['timezone'] = $rc_decode['timezones'][0];
     $rest_countries['currency'] = $rc_decode['currencies'][0];
     $rest_countries['flag'] = $rc_decode['flag'];
+    // print_r($rest_countries);
 
     //OpenWeather Routine
     $ow_api_key = 'cdab949d45e6ad36e58acb23d320ef18';
 
-    $ow_url='https://api.openweathermap.org/data/2.5/onecall?lat=' . $rest_countries['lat'] . '&lon=' . $rest_countries['lng'] . '&exclude=hourly,minutely&units=metric&appid=' . $ow_api_key;
+    $ow_url='https://api.openweathermap.org/data/2.5/weather?lat=' . $rest_countries['lat'] . '&lon=' . $rest_countries['lng'] . '&units=metric&appid=' . $ow_api_key;
 
     $ow_ch = curl_init();
     curl_setopt($ow_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -47,9 +50,17 @@
 
     $ow_decode = json_decode($ow_result,true);
     $open_weather = null;
-    $open_weather['temp'] = $ow_decode['current']['temp'];
-    $open_weather['description'] = $ow_decode['current']['weather'][0]['description'];
-    $open_weather['icon'] = 'http://openweathermap.org/img/wn/' . $ow_decode['current']['weather'][0]['icon'] . '@2x.png';
+    $open_weather['main'] = $ow_decode['weather'][0]['main'];
+    $open_weather['description'] = $ow_decode['weather'][0]['description'];
+    $open_weather['icon'] = 'http://openweathermap.org/img/wn/' . $ow_decode['weather'][0]['icon'] . '@2x.png';
+    $open_weather['temp'] = $ow_decode['main']['temp'];
+    $open_weather['feelsLike'] = $ow_decode['main']['feels_like'];
+    $open_weather['min'] = $ow_decode['main']['temp_min'];
+    $open_weather['max'] = $ow_decode['main']['temp_max'];
+    $open_weather['pressure'] = $ow_decode['main']['pressure'];
+    $open_weather['humidity'] = $ow_decode['main']['humidity'];
+    $open_weather['windSpeed'] = $ow_decode['wind']['speed'];
+    $open_weather['clouds'] = $ow_decode['clouds']['all'];
 
     //Exchange Rates Routine
     $er_url='https://v6.exchangerate-api.com/v6/0e25348ef7f09a5b28274858/latest/' . $rest_countries['currency']['code'];
@@ -106,7 +117,6 @@
 
     //News Routine
     $news_url='https://newsapi.org/v2/everything?q=' . $rest_countries['name'] . '&language=en&apiKey=28a6da9206f946b78fe57038813fd730';
-    // echo $news_url;exit;
 
     $news_ch = curl_init();
     curl_setopt($news_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -129,6 +139,53 @@
     $news['thirdDescription'] = $news_decode['articles'][2]['description'];
     $news['thirdUrl'] = $news_decode['articles'][2]['url'];
 
+    //COVID-19 Routine
+    $covid_ch = curl_init();
+
+    curl_setopt_array($covid_ch, [
+        CURLOPT_URL => "https://covid-19-data.p.rapidapi.com/country?name=" . $rest_countries['name'],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "x-rapidapi-host: covid-19-data.p.rapidapi.com",
+            "x-rapidapi-key: ee24dd5034msh9a2e078a6db28fdp1778c5jsn1d27ffeeae70"
+        ],
+    ]);
+
+    $covid_result = curl_exec($covid_ch);
+
+    curl_close($covid_ch);
+
+    $covid_decode = json_decode($covid_result,true);
+    $covid = null;
+    $covid['confirmed'] = $covid_decode[0]['confirmed'];
+    $covid['recovered'] = $covid_decode[0]['recovered'];
+    $covid['critical'] = $covid_decode[0]['critical'];
+    $covid['deaths'] = $covid_decode[0]['deaths'];
+
+    //ISS Routine
+    $iss_url='https://api.wheretheiss.at/v1/satellites/25544';
+
+    $iss_ch = curl_init();
+    curl_setopt($iss_ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($iss_ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($iss_ch, CURLOPT_URL, $iss_url);
+
+    $iss_result = curl_exec($iss_ch);
+
+    curl_close($iss_ch);
+
+    $iss_decode = json_decode($iss_result,true);
+    $iss = null;
+    $iss['lat'] = $iss_decode['latitude'];
+    $iss['lng'] = $iss_decode['longitude'];
+
+    // Output
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
     $output['status']['description'] = "success";
@@ -139,6 +196,8 @@
     $output['geoNames'] = $geonames;
     $output['timezone'] = $timezone;
     $output['news'] = $news;
+    $output['covid'] = $covid;
+    $output['iss'] = $iss;
     
     header('Content-Type: application/json; charset=UTF-8');
 
