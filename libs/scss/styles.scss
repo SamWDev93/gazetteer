@@ -1,5 +1,9 @@
+.navbar {
+  height: 10vh;
+}
+
 #mapid {
-  height: 100vh;
+  height: 90vh;
   width: 100vw;
   position: relative;
   z-index: 1;
@@ -7,7 +11,6 @@
 
 #selectCountry {
   z-index: 999;
-  margin: 2rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 0.75rem;
   padding: 0.25rem;
