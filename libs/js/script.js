@@ -1,3 +1,9 @@
+// Display loader until page is ready
+$(window).on("load", function () {
+  $("#loader-container").hide();
+  $("#loader").hide();
+});
+
 // Create map
 var mymap = L.map("mapid").setView([0, 0], 2);
 
