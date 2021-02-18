@@ -38,23 +38,187 @@
 
     <!-- Nav -->
     <!-- Image and text -->
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light bg-light d-flex justify-content-around">
       <a class="navbar-brand" href="#">
         <img
           src="gazetteer-logo.png"
-          width="135"
-          height="50"
+          width="175"
+          height="70"
           class="d-inline-block align-top"
           alt="Gazetteer Logo"
         />
       </a>
+      <!-- Select -->
       <select name="selectCountry" id="selectCountry">
-        <option value="choose">Please choose a country</option>
+        <option value="choose">Select a Country</option>
       </select>
+      <!-- Info button -->
+      <button
+        type="button"
+        class="btn"
+        data-toggle="modal"
+        data-target="#infoModal"
+      >
+        Display Country Information
+      </button>
     </nav>
 
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="infoModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="infoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-light">
+          <div class="modal-header">
+            <h4 class="modal-title" id="infoModalLabel">Country Information</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div role="tabpanel d-flex justify-content-around">
+              <!-- Nav tabs -->
+              <ul
+                class="nav nav-tabs d-flex justify-content-around"
+                role="tablist"
+              >
+                <li role="presentation" class="active">
+                  <a
+                    href="#generalTab"
+                    aria-controls="generalTab"
+                    role="tab"
+                    data-toggle="tab"
+                    >General</a
+                  >
+                </li>
+                <li role="presentation">
+                  <a
+                    href="#currencyTab"
+                    aria-controls="currencyTab"
+                    role="tab"
+                    data-toggle="tab"
+                    >Currency</a
+                  >
+                </li>
+                <li role="presentation">
+                  <a
+                    href="#weatherTab"
+                    aria-controls="weatherTab"
+                    role="tab"
+                    data-toggle="tab"
+                    >Weather</a
+                  >
+                </li>
+                <li role="presentation">
+                  <a
+                    href="#newsTab"
+                    aria-controls="newsTab"
+                    role="tab"
+                    data-toggle="tab"
+                    >News</a
+                  >
+                </li>
+                <li role="presentation">
+                  <a
+                    href="#covidTab"
+                    aria-controls="covidTab"
+                    role="tab"
+                    data-toggle="tab"
+                    >COVID-19</a
+                  >
+                </li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="generalTab">
+                  <table>
+                    <tr>
+                      <td>
+                        <img src="" alt="" class="countryFlag" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="countryName"></td>
+                    </tr>
+                    <tr>
+                      <td>Region | Subregion:</td>
+                      <td class="region"></td>
+                    </tr>
+                    <tr>
+                      <td>Area (km<sup>2</sup>):</td>
+                      <td class="area"></td>
+                    </tr>
+                    <tr>
+                      <td>Population:</td>
+                      <td class="population"></td>
+                    </tr>
+                    <tr>
+                      <td>Demonym</td>
+                      <td class="demonym"></td>
+                    </tr>
+                    <tr>
+                      <td>Capital:</td>
+                      <td class="capital"></td>
+                    </tr>
+                    <tr>
+                      <td>Timezone:</td>
+                      <td class="timezone"></td>
+                    </tr>
+                    <tr>
+                      <td>Current Date & Time:</td>
+                      <td class="datetime"></td>
+                    </tr>
+                    <tr>
+                      <td>Coordinates (Lat/Lng):</td>
+                      <td class="coordinates"></td>
+                    </tr>
+                    <tr>
+                      <td>Calling Code:</td>
+                      <td class="callCode"></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Top 3 Wikipedia entries for
+                        <span class="countryName"></span>:
+                      </td>
+                      <td class="wikiEntries"></td>
+                    </tr>
+                  </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="currencyTab">
+                  Currency
+                </div>
+                <div role="tabpanel" class="tab-pane" id="weatherTab">
+                  Weather
+                </div>
+                <div role="tabpanel" class="tab-pane" id="newsTab">News</div>
+                <div role="tabpanel" class="tab-pane" id="covidTab">
+                  COVID-19
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn close-btn" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Map & Select bar -->
-    <div id="mapid" class="d-flex justify-content-end"></div>
+    <div id="mapid"></div>
 
     <!-- jQuery & Bootstrap CDN -->
     <script

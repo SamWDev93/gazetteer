@@ -19,7 +19,7 @@
 
     $rc_decode = json_decode($rc_result,true);
     $rest_countries = null;
-    $rest_countries['name'] = $rc_decode['name'];
+    $rest_countries['iso2'] = $rc_decode['alpha2Code'];
     $rest_countries['capital'] = $rc_decode['capital'];
     $rest_countries['region'] = $rc_decode['region'];
     $rest_countries['subregion'] = $rc_decode['subregion'];
@@ -32,7 +32,6 @@
     $rest_countries['timezone'] = $rc_decode['timezones'][0];
     $rest_countries['currency'] = $rc_decode['currencies'][0];
     $rest_countries['flag'] = $rc_decode['flag'];
-    // print_r($rest_countries);
 
     //OpenWeather Routine
     $ow_api_key = 'cdab949d45e6ad36e58acb23d320ef18';
@@ -78,8 +77,8 @@
     $exchange_rates = null;
     $exchange_rates['rate'] = $er_decode['conversion_rates']['GBP'];
 
-    //GeoNames Routine
-    $gn_url='http://api.geonames.org/wikipediaSearchJSON?q=' . $rest_countries['name'] . '&maxRows=3&username=samw93';
+    //GeoNames Country Info Routine
+    $gn_url='http://api.geonames.org/countryInfoJSON?country=' . $rest_countries['iso2'] . '&maxRows=3&username=samw93';
 
     $gn_ch = curl_init();
     curl_setopt($gn_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -91,16 +90,32 @@
     curl_close($gn_ch);
 
     $gn_decode = json_decode($gn_result,true);
-    $geonames = null;
-    $geonames['firstTitle'] = $gn_decode['geonames'][0]['title'];
-    $geonames['firstWikiUrl'] = $gn_decode['geonames'][0]['wikipediaUrl'];
-    $geonames['secondTitle'] = $gn_decode['geonames'][1]['title'];
-    $geonames['secondWikiUrl'] = $gn_decode['geonames'][1]['wikipediaUrl'];
-    $geonames['thirdTitle'] = $gn_decode['geonames'][2]['title'];
-    $geonames['thirdWikiUrl'] = $gn_decode['geonames'][2]['wikipediaUrl'];
+    $geonames_info = null;
+    $geonames_info['name'] = $gn_decode['geonames'][0]['countryName'];
+    
+    // GeoNames Wiki Routine
+    $gnw_url='http://api.geonames.org/wikipediaSearchJSON?q=' . $geonames_info['name'] . '&maxRows=3&username=samw93';
+
+    $gnw_ch = curl_init();
+    curl_setopt($gnw_ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($gnw_ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($gnw_ch, CURLOPT_URL, $gnw_url);
+
+    $gnw_result = curl_exec($gnw_ch);
+
+    curl_close($gnw_ch);
+
+    $gnw_decode = json_decode($gnw_result,true);
+    $geonames_wiki = null;
+    $geonames_wiki['firstTitle'] = $gnw_decode['geonames'][0]['title'];
+    $geonames_wiki['firstWikiUrl'] = $gnw_decode['geonames'][0]['wikipediaUrl'];
+    $geonames_wiki['secondTitle'] = $gnw_decode['geonames'][1]['title'];
+    $geonames_wiki['secondWikiUrl'] = $gnw_decode['geonames'][1]['wikipediaUrl'];
+    $geonames_wiki['thirdTitle'] = $gnw_decode['geonames'][2]['title'];
+    $geonames_wiki['thirdWikiUrl'] = $gnw_decode['geonames'][2]['wikipediaUrl'];
 
     //Timezone Routine
-    $tz_url='https://timezone.abstractapi.com/v1/current_time?api_key=10f6a0ab29b841cca8ada144c04e152d&location=' . $rest_countries['capital'] . ',' . $rest_countries['name'];
+    $tz_url='https://timezone.abstractapi.com/v1/current_time?api_key=10f6a0ab29b841cca8ada144c04e152d&location=' . $rest_countries['capital'] . ',' . $geonames_info['name'];
 
     $tz_ch = curl_init();
     curl_setopt($tz_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -116,7 +131,7 @@
     $timezone['datetime'] = $tz_decode ['datetime'];
 
     //News Routine
-    $news_url='https://newsapi.org/v2/everything?q=' . $rest_countries['name'] . '&language=en&apiKey=28a6da9206f946b78fe57038813fd730';
+    $news_url='https://newsapi.org/v2/everything?q=' . $geonames_info['name'] . '&language=en&apiKey=28a6da9206f946b78fe57038813fd730';
 
     $news_ch = curl_init();
     curl_setopt($news_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -143,7 +158,7 @@
     $covid_ch = curl_init();
 
     curl_setopt_array($covid_ch, [
-        CURLOPT_URL => "https://covid-19-data.p.rapidapi.com/country?name=" . $rest_countries['name'],
+        CURLOPT_URL => "https://covid-19-data.p.rapidapi.com/country?name=" . $geonames_info['name'],
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_ENCODING => "",
@@ -193,7 +208,8 @@
     $output['restCountries'] = $rest_countries;
     $output['openWeather'] = $open_weather;
     $output['exchangeRates'] = $exchange_rates;
-    $output['geoNames'] = $geonames;
+    $output['geoNames']['info'] = $geonames_info;
+    $output['geoNames']['wiki'] = $geonames_wiki;
     $output['timezone'] = $timezone;
     $output['news'] = $news;
     $output['covid'] = $covid;

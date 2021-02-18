@@ -42,9 +42,12 @@ $.ajax({
       );
     });
   },
+  error: function (request, status, error) {
+    console.log(error);
+  },
 });
 
-// Run getData.php
+// Run getData.php and populate info tables
 $("#selectCountry").change(function () {
   $.ajax({
     url: "libs/php/getData.php",
@@ -57,8 +60,34 @@ $("#selectCountry").change(function () {
       console.log(result);
 
       if (result.status.name == "ok") {
-        $(".test").html(result["data"]);
+        $(".countryFlag").attr("src", result["restCountries"]["flag"]);
+        $(".countryFlag").attr(
+          "alt",
+          result["geoNames"]["info"]["name"] + " flag"
+        );
+        $(".countryName").html(result["geoNames"]["info"]["name"]);
+        $(".region").html(
+          result["restCountries"]["region"] +
+            " | " +
+            result["restCountries"]["subregion"]
+        );
+        $(".area").html(result["restCountries"]["area"]);
+        $(".demonym").html(result["restCountries"]["demonym"]);
+        $(".population").html(result["restCountries"]["population"]);
+
+        $(".capital").html(result["restCountries"]["capital"]);
+        $(".timezone").html(result["restCountries"]["timezone"]);
+        $(".datetime").html(result["timezone"]["datetime"]);
+        $(".coordinates").html(
+          result["restCountries"]["lat"] +
+            " / " +
+            result["restCountries"]["lng"]
+        );
+        $(".callCode").html("+" + result["restCountries"]["callCode"]);
       }
+    },
+    error: function (request, status, error) {
+      console.log(error);
     },
   });
 });

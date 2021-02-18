@@ -1,0 +1,21 @@
+.navbar {
+  height: 10vh;
+  font-size: 0.9rem;
+
+  .btn {
+    border: 1px solid #0085ff;
+    color: #0085ff;
+    font-size: 0.9rem;
+  }
+
+  .btn:hover {
+    background: #0085ff;
+    color: white;
+  }
+
+  #selectCountry {
+    padding: 0.25rem;
+    width: 20rem;
+    text-align-last: center;
+  }
+}
