@@ -92,9 +92,13 @@
     $gn_decode = json_decode($gn_result,true);
     $geonames_info = null;
     $geonames_info['name'] = $gn_decode['geonames'][0]['countryName'];
+    $geonames_info['north'] = $gn_decode['geonames'][0]['north'];
+    $geonames_info['south'] = $gn_decode['geonames'][0]['south'];
+    $geonames_info['east'] = $gn_decode['geonames'][0]['east'];
+    $geonames_info['west'] = $gn_decode['geonames'][0]['west'];
     
     // GeoNames Wiki Routine
-    $gnw_url='http://api.geonames.org/wikipediaSearchJSON?q=' . $geonames_info['name'] . '&maxRows=3&username=samw93';
+    $gnw_url='http://api.geonames.org/wikipediaBoundingBoxJSON?north=' . $geonames_info['north'] . '&south=' . $geonames_info['south'] . '&east=' . $geonames_info['east'] . '&west=' . $geonames_info['west'] . '&username=samw93';
 
     $gnw_ch = curl_init();
     curl_setopt($gnw_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -131,7 +135,7 @@
     $timezone['datetime'] = $tz_decode ['datetime'];
 
     //News Routine
-    $news_url='https://newsapi.org/v2/everything?q=' . $geonames_info['name'] . '&language=en&apiKey=28a6da9206f946b78fe57038813fd730';
+    $news_url='https://newsapi.org/v2/top-headlines?country=' . $rest_countries['iso2'] . '&apiKey=28a6da9206f946b78fe57038813fd730';
 
     $news_ch = curl_init();
     curl_setopt($news_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -144,6 +148,9 @@
 
     $news_decode = json_decode($news_result,true);
     $news = null;
+    if ($news_decode['totalResults'] == 0) {
+        $news = "No news found.";
+    } else {
     $news['firstTitle'] = $news_decode['articles'][0]['title'];
     $news['firstDescription'] = $news_decode['articles'][0]['description'];
     $news['firstUrl'] = $news_decode['articles'][0]['url'];
@@ -153,12 +160,13 @@
     $news['thirdTitle'] = $news_decode['articles'][2]['title'];
     $news['thirdDescription'] = $news_decode['articles'][2]['description'];
     $news['thirdUrl'] = $news_decode['articles'][2]['url'];
+    }
 
     //COVID-19 Routine
     $covid_ch = curl_init();
 
     curl_setopt_array($covid_ch, [
-        CURLOPT_URL => "https://covid-19-data.p.rapidapi.com/country?name=" . $geonames_info['name'],
+        CURLOPT_URL => "https://covid-19-data.p.rapidapi.com/country/code?code=" . $rest_countries['iso2'],
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_ENCODING => "",
@@ -215,7 +223,7 @@
     $output['covid'] = $covid;
     $output['iss'] = $iss;
     
-    header('Content-Type: application/json; charset=UTF-8');
+    header("Content-Type: application/json; charset=UTF-8");
 
     echo json_encode($output);
 ?>

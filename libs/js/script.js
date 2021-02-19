@@ -4,6 +4,19 @@ $(window).on("load", function () {
   $("#loader").hide();
 });
 
+$(document).ready(() => {
+  const successCallback = (position) => {
+    userLatLng = `${position.coords.latitude}, ${position.coords.longitude}`;
+    console.log(userLatLng);
+  };
+
+  const errorCallback = (error) => {
+    console.error(error);
+  };
+
+  navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+});
+
 // Create map
 var mymap = L.map("mapid").setView([0, 0], 2);
 
@@ -71,10 +84,13 @@ $("#selectCountry").change(function () {
             " | " +
             result["restCountries"]["subregion"]
         );
-        $(".area").html(result["restCountries"]["area"]);
+        $(".area").html(
+          Number(result["restCountries"]["area"]).toLocaleString("en")
+        );
+        $(".population").html(
+          Number(result["restCountries"]["population"]).toLocaleString("en")
+        );
         $(".demonym").html(result["restCountries"]["demonym"]);
-        $(".population").html(result["restCountries"]["population"]);
-
         $(".capital").html(result["restCountries"]["capital"]);
         $(".timezone").html(result["restCountries"]["timezone"]);
         $(".datetime").html(result["timezone"]["datetime"]);
@@ -83,7 +99,6 @@ $("#selectCountry").change(function () {
             " / " +
             result["restCountries"]["lng"]
         );
-        $(".callCode").html("+" + result["restCountries"]["callCode"]);
       }
     },
     error: function (request, status, error) {
