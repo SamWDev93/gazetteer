@@ -40,6 +40,47 @@ var Stamen_TonerHybrid = L.tileLayer(
   }
 ).addTo(mymap);
 
+//EasyButtons
+L.easyButton(
+  "<i class='bi bi-info-circle'></i>",
+  function () {
+    $("#countryInfo").modal("toggle");
+  },
+  "Country Information"
+).addTo(mymap);
+
+L.easyButton(
+  "<i class='bi bi-cash'></i>",
+  function () {
+    $("#currencyInfo").modal("toggle");
+  },
+  "Currency Information"
+).addTo(mymap);
+
+L.easyButton(
+  "<i class='bi bi-brightness-high'></i>",
+  function () {
+    $("#weatherInfo").modal("toggle");
+  },
+  "Weather Information"
+).addTo(mymap);
+
+L.easyButton(
+  "<i class='bi bi-newspaper'></i>",
+  function () {
+    $("#latestNews").modal("toggle");
+  },
+  "Latest News"
+).addTo(mymap);
+
+L.easyButton(
+  "<i class='bi bi-exclamation-circle'></i>",
+  function () {
+    $("#covid19").modal("toggle");
+  },
+  "COVID-19 Information"
+).addTo(mymap);
+
 // Populate select field
 $.ajax({
   url: "libs/php/populateSelect.php",

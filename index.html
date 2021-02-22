@@ -15,12 +15,16 @@
     <!-- CSS -->
     <link rel="stylesheet" href="libs/css/styles.css" />
 
-    <!-- Leaflet CSS CDN -->
+    <!-- Leaflet CSS & EasyButton CDN -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"
     />
 
     <!-- Bootstrap CSS & Icons CDN -->
@@ -42,7 +46,7 @@
 
     <!-- Nav -->
     <!-- Image and text -->
-    <nav class="navbar navbar-light bg-light d-flex justify-content-around">
+    <nav class="navbar navbar-light bg-light d-flex justify-content-between">
       <a class="navbar-brand" href="#">
         <img
           src="gazetteer-logo.png"
@@ -56,30 +60,20 @@
       <select name="selectCountry" id="selectCountry">
         <option value="choose">Select a Country</option>
       </select>
-      <!-- Info button -->
-      <button
-        type="button"
-        class="btn"
-        data-toggle="modal"
-        data-target="#infoModal"
-      >
-        Display Country Information
-      </button>
     </nav>
 
-    <!-- Modal -->
+    <!-- Country Info Modal -->
     <div
       class="modal fade"
-      id="infoModal"
+      id="countryInfo"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="infoModalLabel"
+      aria-labelledby="countryInfoLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content bg-light">
+      <div class="modal-dialog">
+        <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="infoModalLabel">Country Information</h4>
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
             <button
               type="button"
               class="close"
@@ -89,159 +83,160 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div role="tabpanel d-flex justify-content-around">
-              <!-- Nav tabs -->
-              <ul
-                class="nav nav-tabs d-flex justify-content-around"
-                role="tablist"
-              >
-                <li role="presentation" class="active">
-                  <a
-                    href="#generalTab"
-                    aria-controls="generalTab"
-                    role="tab"
-                    data-toggle="tab"
-                    >General</a
-                  >
-                </li>
-                <li role="presentation">
-                  <a
-                    href="#currencyTab"
-                    aria-controls="currencyTab"
-                    role="tab"
-                    data-toggle="tab"
-                    >Currency</a
-                  >
-                </li>
-                <li role="presentation">
-                  <a
-                    href="#weatherTab"
-                    aria-controls="weatherTab"
-                    role="tab"
-                    data-toggle="tab"
-                    >Weather</a
-                  >
-                </li>
-                <li role="presentation">
-                  <a
-                    href="#newsTab"
-                    aria-controls="newsTab"
-                    role="tab"
-                    data-toggle="tab"
-                    >News</a
-                  >
-                </li>
-                <li role="presentation">
-                  <a
-                    href="#covidTab"
-                    aria-controls="covidTab"
-                    role="tab"
-                    data-toggle="tab"
-                    >COVID-19</a
-                  >
-                </li>
-              </ul>
-              <!-- Tab panes -->
-              <div class="tab-content">
-                <div
-                  role="tabpanel"
-                  class="tab-pane active d-flex justify-content-center"
-                  id="generalTab"
-                >
-                  <table>
-                    <tr>
-                      <td>
-                        <img src="" alt="" class="countryFlag" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="countryName"></td>
-                    </tr>
-                    <tr>
-                      <td>Region | Subregion:</td>
-                      <td class="region"></td>
-                    </tr>
-                    <tr>
-                      <td>Area (km<sup>2</sup>):</td>
-                      <td class="area"></td>
-                    </tr>
-                    <tr>
-                      <td>Population:</td>
-                      <td class="population"></td>
-                    </tr>
-                    <tr>
-                      <td>Demonym</td>
-                      <td class="demonym"></td>
-                    </tr>
-                    <tr>
-                      <td>Capital:</td>
-                      <td class="capital"></td>
-                    </tr>
-                    <tr>
-                      <td>Timezone:</td>
-                      <td class="timezone"></td>
-                    </tr>
-                    <tr>
-                      <td>Current Date & Time:</td>
-                      <td class="datetime"></td>
-                    </tr>
-                    <tr>
-                      <td>Coordinates (Lat/Lng):</td>
-                      <td class="coordinates"></td>
-                    </tr>
-                    <tr>
-                      <td>Calling Code:</td>
-                      <td class="callCode"></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        Top 3 Wikipedia entries for
-                        <span class="countryName"></span>:
-                      </td>
-                      <td class="wikiEntries">
-                        <a
-                          href=""
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="firstUrl"
-                          ><span class="firstTitle"></span></a
-                        >,
-                        <a
-                          href=""
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="secondUrl"
-                          ><span class="secondTitle"></span></a
-                        >,
-                        <a
-                          href=""
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="thirdUrl"
-                          ><span class="thirdTitle"></span
-                        ></a>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="currencyTab">
-                  Currency
-                </div>
-                <div role="tabpanel" class="tab-pane" id="weatherTab">
-                  Weather
-                </div>
-                <div role="tabpanel" class="tab-pane" id="newsTab">News</div>
-                <div role="tabpanel" class="tab-pane" id="covidTab">
-                  COVID-19
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="modal-body">...</div>
           <div class="modal-footer">
-            <button type="button" class="btn close-btn" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
               Close
             </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Currency Info Modal -->
+    <div
+      class="modal fade"
+      id="currencyInfo"
+      tabindex="-1"
+      aria-labelledby="currencyInfoLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weather Info Modal -->
+    <div
+      class="modal fade"
+      id="weatherInfo"
+      tabindex="-1"
+      aria-labelledby="weatherInfoLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest News Modal -->
+    <div
+      class="modal fade"
+      id="latestNews"
+      tabindex="-1"
+      aria-labelledby="latestNewsLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COVID Modal -->
+    <div
+      class="modal fade"
+      id="covid19"
+      tabindex="-1"
+      aria-labelledby="covid19Label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -262,12 +257,13 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Leaflet JS CDN -->
+    <!-- Leaflet & EasyButton JS CDN -->
     <script
       src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
     <!-- JS -->
     <script src="libs/js/script.js"></script>
