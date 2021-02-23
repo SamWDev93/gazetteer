@@ -17,9 +17,6 @@ $(document).ready(() => {
   navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 });
 
-// Create map
-var mymap = L.map("mapid").setView([0, 0], 2);
-
 // Map tiles
 var Esri_WorldImagery = L.tileLayer(
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
@@ -27,7 +24,50 @@ var Esri_WorldImagery = L.tileLayer(
     attribution:
       "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
   }
-).addTo(mymap);
+);
+var OpenStreetMap_Mapnik = L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }
+);
+var Stadia_AlidadeSmoothDark = L.tileLayer(
+  "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+  {
+    maxZoom: 20,
+    attribution:
+      '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+  }
+);
+var Stadia_Outdoors = L.tileLayer(
+  "https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png",
+  {
+    maxZoom: 20,
+    attribution:
+      '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+  }
+);
+var Stamen_Watercolor = L.tileLayer(
+  "https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}",
+  {
+    attribution:
+      'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: "abcd",
+    minZoom: 1,
+    maxZoom: 16,
+    ext: "jpg",
+  }
+);
+var OpenRailwayMap = L.tileLayer(
+  "https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png",
+  {
+    maxZoom: 19,
+    attribution:
+      'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Map style: &copy; <a href="https://www.OpenRailwayMap.org">OpenRailwayMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+  }
+);
 var Stamen_TonerHybrid = L.tileLayer(
   "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}",
   {
@@ -38,7 +78,51 @@ var Stamen_TonerHybrid = L.tileLayer(
     maxZoom: 20,
     ext: "png",
   }
-).addTo(mymap);
+);
+var WaymarkedTrails_hiking = L.tileLayer(
+  "https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png",
+  {
+    maxZoom: 18,
+    attribution:
+      'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Map style: &copy; <a href="https://waymarkedtrails.org">waymarkedtrails.org</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+  }
+);
+var WaymarkedTrails_cycling = L.tileLayer(
+  "https://tile.waymarkedtrails.org/cycling/{z}/{x}/{y}.png",
+  {
+    maxZoom: 18,
+    attribution:
+      'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Map style: &copy; <a href="https://waymarkedtrails.org">waymarkedtrails.org</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+  }
+);
+
+// Create map
+var mymap = L.map("mapid", {
+  center: [0, 0],
+  zoom: 2,
+  layers: [
+    Esri_WorldImagery,
+    OpenStreetMap_Mapnik,
+    Stadia_AlidadeSmoothDark,
+    Stamen_Watercolor,
+  ],
+});
+
+var baseMaps = {
+  "Streets Map": OpenStreetMap_Mapnik,
+  Dark: Stadia_AlidadeSmoothDark,
+  Watercolor: Stamen_Watercolor,
+  "World Imagery": Esri_WorldImagery,
+};
+
+var mapOverlays = {
+  "Railways Overlay": OpenRailwayMap,
+  "World Imagery Overlay": Stamen_TonerHybrid,
+  "Hiking Trails": WaymarkedTrails_hiking,
+  "Cycling Trails": WaymarkedTrails_cycling,
+};
+
+L.control.layers(baseMaps, mapOverlays).addTo(mymap);
 
 //EasyButtons
 L.easyButton(
