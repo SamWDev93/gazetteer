@@ -76,7 +76,11 @@
 
     $er_decode = json_decode($er_result,true);
     $exchange_rates = null;
+    if ($er_decode['result'] == "error") {
+        $exchange_rates = "N/A";
+    } else {
     $exchange_rates['rate'] = $er_decode['conversion_rates']['GBP'];
+    }
 
     //GeoNames Country Info Routine
     $gn_url='http://api.geonames.org/countryInfoJSON?country=' . $rest_countries['iso2'] . '&maxRows=3&username=samw93';
@@ -171,7 +175,7 @@
     $news_decode = json_decode($news_result,true);
     $news = null;
     if ($news_decode['totalResults'] == 0) {
-        $news = "No news found.";
+        $news = "N/A";
     } else {
     $news['firstTitle'] = $news_decode['articles'][0]['title'];
     $news['firstDescription'] = $news_decode['articles'][0]['description'];

@@ -70,10 +70,12 @@
       aria-labelledby="countryInfoLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="countryInfoLabel">
+              Country Information
+            </h5>
             <button
               type="button"
               class="close"
@@ -83,7 +85,85 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td class="center">
+                  <img src="" alt="" class="countryFlag" />
+                </td>
+              </tr>
+              <tr>
+                <td class="center">
+                  <b class="countryName"></b>
+                </td>
+              </tr>
+              <tr>
+                <td class="right">Region | Subregion:</td>
+                <td class="region left"></td>
+              </tr>
+              <tr>
+                <td class="right">Area:</td>
+                <td class="area left"></td>
+              </tr>
+              <tr>
+                <td class="right">Population:</td>
+                <td class="population left"></td>
+              </tr>
+              <tr>
+                <td class="right">Demonym:</td>
+                <td class="demonym left"></td>
+              </tr>
+              <tr>
+                <td class="right">Capital:</td>
+                <td class="capital left"></td>
+              </tr>
+              <tr>
+                <td class="right">Timezone:</td>
+                <td class="timezone left"></td>
+              </tr>
+              <tr>
+                <td class="right">Current Date & Time:</td>
+                <td class="datetime left"></td>
+              </tr>
+              <tr>
+                <td class="right">Coordinates (Lat/Lng):</td>
+                <td class="coordinates left"></td>
+              </tr>
+              <tr>
+                <td class="right">Calling Code:</td>
+                <td class="callCode left"></td>
+              </tr>
+              <tr>
+                <td class="right">Drive On:</td>
+                <td class="driveOn left"></td>
+              </tr>
+              <tr>
+                <td class="right">Speed Measured In:</td>
+                <td class="speedIn left"></td>
+              </tr>
+              <tr>
+                <td class="right">Web Domain:</td>
+                <td class="webDomain left"></td>
+              </tr>
+              <tr>
+                <td class="right">
+                  Top 3 Wikipedia Entries for "<span class="countryName"></span
+                  >":
+                </td>
+                <td class="left">
+                  <a href="" class="firstWikiUrl"
+                    ><span class="firstWikiTitle"></span></a
+                  >,
+                  <a href="" class="secondWikiUrl"
+                    ><span class="secondWikiTitle"></span></a
+                  >,
+                  <a href="" class="thirdWikiUrl"
+                    ><span class="thirdWikiTitle"></span
+                  ></a>
+                </td>
+              </tr>
+            </table>
+          </div>
           <div class="modal-footer">
             <button
               type="button"
@@ -92,7 +172,6 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -106,10 +185,12 @@
       aria-labelledby="currencyInfoLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="currencyInfoLabel">
+              Currency Information
+            </h5>
             <button
               type="button"
               class="close"
@@ -119,7 +200,54 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td class="center">
+                  <img src="" alt="" class="countryFlag" />
+                </td>
+              </tr>
+              <tr>
+                <td class="center">
+                  <b class="countryName"></b>
+                </td>
+              </tr>
+              <tr>
+                <td>Currency Name:</td>
+                <td class="currencyName"></td>
+              </tr>
+              <tr>
+                <td>Subunit:</td>
+                <td class="subunit"></td>
+              </tr>
+              <tr>
+                <td>Smallest Denomination:</td>
+                <td><span class="smallDenom"></span> <span class="subunit"></span></span></td>
+              </tr>
+              <tr>
+                <td>
+                  Number of <span class="subunit"></span>'s to 1
+                  <span class="currencyName"></span>:
+                </td>
+                <td class="subToUnit"></td>
+              </tr>
+              <tr>
+                <td>Currency Symbol:</td>
+                <td class="currencySymbol"></td>
+              </tr>
+              <tr>
+                <td>Currency Code:</td>
+                <td class="currencyCode"></td>
+              </tr>
+              <tr>
+                <td>Current Exchange Rate:</td>
+                <td class="noCurrency">
+                  1 <span class="currencyName"></span> =
+                  <span class="exchangeRate"></span> GBP
+                </td>
+              </tr>
+            </table>
+          </div>
           <div class="modal-footer">
             <button
               type="button"
@@ -128,7 +256,6 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -142,10 +269,12 @@
       aria-labelledby="weatherInfoLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="weatherInfoLabel">
+              Weather Information
+            </h5>
             <button
               type="button"
               class="close"
@@ -155,7 +284,64 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td class="center">
+                  <img src="" alt="" class="countryFlag" />
+                </td>
+              </tr>
+              <tr>
+                <td class="center">
+                  <b class="countryName"></b>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img src="" class="icon" />
+                </td>
+              </tr>
+              <tr>
+                <td class="main"></td>
+              </tr>
+              <tr>
+                <td>Description:</td>
+                <td class="description"></td>
+              </tr>
+              <tr>
+                <td>Temperature:</td>
+                <td class="temp"></td>
+              </tr>
+              <tr>
+                <td>Feels Like:</td>
+                <td class="feelsLike"></td>
+              </tr>
+              <tr>
+                <td>Daily High:</td>
+                <td class="max"></td>
+              </tr>
+              <tr>
+                <td>Daily Low:</td>
+                <td class="min"></td>
+              </tr>
+              <tr>
+                <td>Humidity:</td>
+                <td class="humidity"></td>
+              </tr>
+              <tr>
+                <td>Clouds:</td>
+                <td class="clouds"></td>
+              </tr>
+              <tr>
+                <td>Wind Speed:</td>
+                <td class="windSpeed"></td>
+              </tr>
+              <tr>
+                <td>Pressure:</td>
+                <td class="pressure"></td>
+              </tr>
+            </table>
+          </div>
           <div class="modal-footer">
             <button
               type="button"
@@ -164,7 +350,6 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -178,10 +363,10 @@
       aria-labelledby="latestNewsLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="latestNewsLabel">Latest News</h5>
             <button
               type="button"
               class="close"
@@ -191,7 +376,52 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td class="center">
+                  <img src="" alt="" class="countryFlag" />
+                </td>
+              </tr>
+              <tr>
+                <td class="center">
+                  <b class="countryName"></b>
+                </td>
+              </tr>
+            </table>
+            <table class="noNews">
+              <tr>
+                <td>
+                  <a href="" class="firstNewsUrl"
+                    ><span class="firstNewsTitle"></span
+                  ></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="firstNewsDescription"></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="" class="secondNewsUrl"
+                    ><span class="secondNewsTitle"></span
+                  ></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="secondNewsDescription"></td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="" class="thirdNewsUrl"
+                    ><span class="thirdNewsTitle"></span
+                  ></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="thirdNewsDescription"></td>
+              </tr>
+            </table>
+          </div>
           <div class="modal-footer">
             <button
               type="button"
@@ -200,7 +430,6 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -214,10 +443,10 @@
       aria-labelledby="covid19Label"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="covid19Label">COVID-19 Information</h5>
             <button
               type="button"
               class="close"
@@ -227,7 +456,36 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <table>
+              <tr>
+                <td class="center">
+                  <img src="" alt="" class="countryFlag" />
+                </td>
+              </tr>
+              <tr>
+                <td class="center">
+                  <b class="countryName"></b>
+                </td>
+              </tr>
+              <tr>
+                <td>Confirmed Cases:</td>
+                <td class="confirmed"></td>
+              </tr>
+              <tr>
+                <td>Recovered:</td>
+                <td class="recovered"></td>
+              </tr>
+              <tr>
+                <td>Deaths:</td>
+                <td class="deaths"></td>
+              </tr>
+              <tr>
+                <td>Critical</td>
+                <td class="critical"></td>
+              </tr>
+            </table>
+          </div>
           <div class="modal-footer">
             <button
               type="button"
@@ -236,7 +494,6 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>

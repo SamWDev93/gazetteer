@@ -74,7 +74,7 @@ L.easyButton(
 ).addTo(mymap);
 
 L.easyButton(
-  "<i class='bi bi-exclamation-circle'></i>",
+  "<i class='bi bi-x-circle'></i>",
   function () {
     $("#covid19").modal("toggle");
   },
@@ -114,6 +114,7 @@ $("#selectCountry").change(function () {
       console.log(result);
 
       if (result.status.name == "ok") {
+        // Country Info
         $(".countryFlag").attr("src", result["restCountries"]["flag"]);
         $(".countryFlag").attr(
           "alt",
@@ -126,7 +127,8 @@ $("#selectCountry").change(function () {
             result["restCountries"]["subregion"]
         );
         $(".area").html(
-          Number(result["restCountries"]["area"]).toLocaleString("en")
+          Number(result["restCountries"]["area"]).toLocaleString("en") +
+            " km<sup>2</sup>"
         );
         $(".population").html(
           Number(result["restCountries"]["population"]).toLocaleString("en")
@@ -140,6 +142,85 @@ $("#selectCountry").change(function () {
             " / " +
             result["restCountries"]["lng"]
         );
+        $(".callCode").html("+" + result["restCountries"]["callCode"]);
+        $(".driveOn").html(
+          "The " + result["openCage"]["driveOn"] + " side of the road"
+        );
+        $(".speedIn").html(result["openCage"]["speedIn"]);
+        $(".webDomain").html(result["restCountries"]["webDomain"]);
+        $(".firstWikiUrl").attr(
+          "href",
+          result["geoNames"]["wiki"]["firstWikiUrl"]
+        );
+        $(".secondWikiUrl").attr(
+          "href",
+          result["geoNames"]["wiki"]["secondWikiUrl"]
+        );
+        $(".thirdWikiUrl").attr(
+          "href",
+          result["geoNames"]["wiki"]["thirdWikiUrl"]
+        );
+        $(".firstWikiTitle").html(result["geoNames"]["wiki"]["firstTitle"]);
+        $(".secondWikiTitle").html(result["geoNames"]["wiki"]["secondTitle"]);
+        $(".thirdWikiTitle").html(result["geoNames"]["wiki"]["thirdTitle"]);
+
+        // Currency Info
+        if (result.exchangeRates != "N/A") {
+          $(".currencyName").html(result["restCountries"]["currency"]["name"]);
+          $(".subunit").html(result["openCage"]["subunit"]);
+          $(".smallDenom").html(result["openCage"]["smallDenom"]);
+          $(".subToUnit").html(result["openCage"]["subToUnit"]);
+          $(".currencySymbol").html(
+            result["restCountries"]["currency"]["symbol"]
+          );
+          $(".currencyCode").html(result["restCountries"]["currency"]["code"]);
+          $(".exchangeRate").html(result["exchangeRates"]["rate"]);
+        } else {
+          $(".currencyName").html(result["restCountries"]["currency"]["name"]);
+          $(".subunit").html(result["openCage"]["subunit"]);
+          $(".smallDenom").html(result["openCage"]["smallDenom"]);
+          $(".subToUnit").html(result["openCage"]["subToUnit"]);
+          $(".currencySymbol").html(
+            result["restCountries"]["currency"]["symbol"]
+          );
+          $(".currencyCode").html(result["restCountries"]["currency"]["code"]);
+          $(".exchangeRate").html(result["exchangeRates"]["rate"]);
+          $(".noCurrency").html("No exchange rate available at this time.");
+        }
+
+        // Weather Info
+        $(".icon").attr("src", result["openWeather"]["icon"]);
+        $(".main").html(result["openWeather"]["main"]);
+        $(".description").html(result["openWeather"]["description"]);
+        $(".temp").html(result["openWeather"]["temp"] + "&deg;C");
+        $(".feelsLike").html(result["openWeather"]["feelsLike"] + "&deg;C");
+        $(".max").html(result["openWeather"]["max"] + "&deg;C");
+        $(".min").html(result["openWeather"]["min"] + "&deg;C");
+        $(".humidity").html(result["openWeather"]["humidity"] + "%");
+        $(".clouds").html(result["openWeather"]["clouds"] + "%");
+        $(".windSpeed").html(result["openWeather"]["windSpeed"] + " m/s");
+        $(".pressure").html(result["openWeather"]["pressure"] + " hPa");
+
+        // Latest News
+        if (result.news == "N/A") {
+          $(".noNews").html("NO NEWS AVAILABLE AT THIS TIME.");
+        } else {
+          $(".firstNewsUrl").attr("href", result["news"]["firstUrl"]);
+          $(".firstNewsTitle").html(result["news"]["firstTitle"]);
+          $(".firstNewsDescription").html(result["news"]["firstDescription"]);
+          $(".secondNewsUrl").attr("href", result["news"]["secondUrl"]);
+          $(".secondNewsTitle").html(result["news"]["secondTitle"]);
+          $(".secondNewsDescription").html(result["news"]["secondDescription"]);
+          $(".thirdNewsUrl").attr("href", result["news"]["thirdUrl"]);
+          $(".thirdNewsTitle").html(result["news"]["thirdTitle"]);
+          $(".thirdNewsDescription").html(result["news"]["thirdDescription"]);
+        }
+
+        // COVID-19 Info
+        $(".confirmed").html(result["covid"]["confirmed"]);
+        $(".recovered").html(result["covid"]["recovered"]);
+        $(".deaths").html(result["covid"]["deaths"]);
+        $(".critical").html(result["covid"]["critical"]);
       }
     },
     error: function (request, status, error) {
