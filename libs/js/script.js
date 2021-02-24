@@ -99,12 +99,13 @@ var WaymarkedTrails_cycling = L.tileLayer(
 // Create map
 var mymap = L.map("mapid", {
   center: [0, 0],
-  zoom: 2,
+  zoom: 3,
   layers: [
     Esri_WorldImagery,
     OpenStreetMap_Mapnik,
     Stadia_AlidadeSmoothDark,
     Stamen_Watercolor,
+    Stamen_TonerHybrid,
   ],
 });
 
@@ -183,6 +184,30 @@ $.ajax({
   error: function (request, status, error) {
     console.log(error);
   },
+});
+
+// Apply country border to map
+$("#selectCountry").change(function () {
+  $.ajax({
+    url: "libs/php/getCountryBorders.php",
+    type: "POST",
+    dataType: "json",
+    success: function (result) {
+      if (
+        $("#selectCountry").val() ==
+        result["data"]["features"][0]["properties"]["iso_a3"]
+      ) {
+        L.geoJSON(result["data"], {
+          style: function (feature) {
+            return { color: "#000" };
+          },
+        }).addTo(mymap);
+      }
+    },
+    error: function (request, status, error) {
+      console.log(error);
+    },
+  });
 });
 
 // Run getData.php and populate info tables
