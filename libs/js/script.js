@@ -6,15 +6,22 @@ $(window).on("load", function () {
 
 $(document).ready(() => {
   const successCallback = (position) => {
-    userLatLng = `${position.coords.latitude}, ${position.coords.longitude}`;
-    console.log(userLatLng);
+    L.marker([position.coords.latitude, position.coords.longitude]).addTo(
+      mymap
+    );
   };
 
   const errorCallback = (error) => {
-    console.error(error);
+    console.log("Unable to retrieve your location");
+
+    if (!navigator.geolocation) {
+      console.log("Geolocation is not supported by your browser");
+    }
   };
 
-  navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+  navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
+    enableHighAccuracy: true,
+  });
 });
 
 // Map tiles
@@ -100,25 +107,19 @@ var WaymarkedTrails_cycling = L.tileLayer(
 var mymap = L.map("mapid", {
   center: [0, 0],
   zoom: 3,
-  layers: [
-    Esri_WorldImagery,
-    OpenStreetMap_Mapnik,
-    Stadia_AlidadeSmoothDark,
-    Stamen_Watercolor,
-    Stamen_TonerHybrid,
-  ],
+  layers: [OpenStreetMap_Mapnik],
 });
 
 var baseMaps = {
   "Streets Map": OpenStreetMap_Mapnik,
   Dark: Stadia_AlidadeSmoothDark,
-  Watercolor: Stamen_Watercolor,
   "World Imagery": Esri_WorldImagery,
+  Watercolor: Stamen_Watercolor,
 };
 
 var mapOverlays = {
-  "Railways Overlay": OpenRailwayMap,
   "World Imagery Overlay": Stamen_TonerHybrid,
+  "Railways Overlay": OpenRailwayMap,
   "Hiking Trails": WaymarkedTrails_hiking,
   "Cycling Trails": WaymarkedTrails_cycling,
 };
@@ -127,7 +128,7 @@ L.control.layers(baseMaps, mapOverlays).addTo(mymap);
 
 //EasyButtons
 L.easyButton(
-  "<i class='bi bi-info-circle'></i>",
+  "<i class='fas fa-info-circle'></i>",
   function () {
     $("#countryInfo").modal("toggle");
   },
@@ -135,7 +136,7 @@ L.easyButton(
 ).addTo(mymap);
 
 L.easyButton(
-  "<i class='bi bi-cash'></i>",
+  "<i class='fas fa-pound-sign'></i>",
   function () {
     $("#currencyInfo").modal("toggle");
   },
@@ -143,7 +144,7 @@ L.easyButton(
 ).addTo(mymap);
 
 L.easyButton(
-  "<i class='bi bi-brightness-high'></i>",
+  "<i class='fas fa-cloud-sun-rain'></i>",
   function () {
     $("#weatherInfo").modal("toggle");
   },
@@ -151,7 +152,7 @@ L.easyButton(
 ).addTo(mymap);
 
 L.easyButton(
-  "<i class='bi bi-newspaper'></i>",
+  "<i class='fas fa-newspaper'></i>",
   function () {
     $("#latestNews").modal("toggle");
   },
@@ -159,11 +160,31 @@ L.easyButton(
 ).addTo(mymap);
 
 L.easyButton(
-  "<i class='bi bi-x-circle'></i>",
+  "<i class='fas fa-virus'></i>",
   function () {
     $("#covid19").modal("toggle");
   },
   "COVID-19 Information"
+).addTo(mymap);
+
+L.easyButton(
+  "<i class='fas fa-satellite'></i>",
+  function () {
+    $.ajax({
+      url: "libs/php/findISS.php",
+      type: "POST",
+      dataType: "json",
+      success: function (result) {
+        L.marker([result.iss.lat, result.iss.lng])
+          .bindPopup("Current location of the International Space Station")
+          .addTo(mymap);
+      },
+      error: function (request, status, error) {
+        console.log(error);
+      },
+    });
+  },
+  "Track ISS"
 ).addTo(mymap);
 
 // Populate select field
@@ -274,27 +295,23 @@ $("#selectCountry").change(function () {
         $(".thirdWikiTitle").html(result["geoNames"]["wiki"]["thirdTitle"]);
 
         // Currency Info
+        $(".currencyName").html(result["restCountries"]["currency"]["name"]);
+        $(".subunit").html(result["openCage"]["subunit"]);
+        $(".smallDenom").html(result["openCage"]["smallDenom"]);
+        $(".subToUnit").html(result["openCage"]["subToUnit"]);
+        $(".currencySymbol").html(
+          result["restCountries"]["currency"]["symbol"]
+        );
+        $(".currencyCode").html(result["restCountries"]["currency"]["code"]);
+        $(".exchangeRate").html();
         if (result.exchangeRates != "N/A") {
-          $(".currencyName").html(result["restCountries"]["currency"]["name"]);
-          $(".subunit").html(result["openCage"]["subunit"]);
-          $(".smallDenom").html(result["openCage"]["smallDenom"]);
-          $(".subToUnit").html(result["openCage"]["subToUnit"]);
-          $(".currencySymbol").html(
-            result["restCountries"]["currency"]["symbol"]
+          $(".exchangeRate").html(
+            `1 ${result["restCountries"]["currency"]["name"]} = ${result["exchangeRates"]["rate"]} British pound`
           );
-          $(".currencyCode").html(result["restCountries"]["currency"]["code"]);
-          $(".exchangeRate").html(result["exchangeRates"]["rate"]);
         } else {
-          $(".currencyName").html(result["restCountries"]["currency"]["name"]);
-          $(".subunit").html(result["openCage"]["subunit"]);
-          $(".smallDenom").html(result["openCage"]["smallDenom"]);
-          $(".subToUnit").html(result["openCage"]["subToUnit"]);
-          $(".currencySymbol").html(
-            result["restCountries"]["currency"]["symbol"]
+          $(".exchangeRate").html(
+            "No exchange rate information available at this time"
           );
-          $(".currencyCode").html(result["restCountries"]["currency"]["code"]);
-          $(".exchangeRate").html(result["exchangeRates"]["rate"]);
-          $(".noCurrency").html("No exchange rate available at this time.");
         }
 
         // Weather Info
@@ -312,7 +329,12 @@ $("#selectCountry").change(function () {
 
         // Latest News
         if (result.news == "N/A") {
-          $(".noNews").html("NO NEWS AVAILABLE AT THIS TIME.");
+          $(".firstNewsTitle").html("No news available at this time");
+          $(".firstNewsDescription").html(" ");
+          $(".secondNewsTitle").html(" ");
+          $(".secondNewsDescription").html(" ");
+          $(".thirdNewsTitle").html(" ");
+          $(".thirdNewsDescription").html(" ");
         } else {
           $(".firstNewsUrl").attr("href", result["news"]["firstUrl"]);
           $(".firstNewsTitle").html(result["news"]["firstTitle"]);

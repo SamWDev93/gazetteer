@@ -217,23 +217,6 @@
     $covid['critical'] = $covid_decode[0]['critical'];
     $covid['deaths'] = $covid_decode[0]['deaths'];
 
-    //ISS Routine
-    $iss_url='https://api.wheretheiss.at/v1/satellites/25544';
-
-    $iss_ch = curl_init();
-    curl_setopt($iss_ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($iss_ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($iss_ch, CURLOPT_URL, $iss_url);
-
-    $iss_result = curl_exec($iss_ch);
-
-    curl_close($iss_ch);
-
-    $iss_decode = json_decode($iss_result,true);
-    $iss = null;
-    $iss['lat'] = $iss_decode['latitude'];
-    $iss['lng'] = $iss_decode['longitude'];
-
     // Output
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
@@ -248,7 +231,6 @@
     $output['timezone'] = $timezone;
     $output['news'] = $news;
     $output['covid'] = $covid;
-    $output['iss'] = $iss;
     
     header("Content-Type: application/json; charset=UTF-8");
 

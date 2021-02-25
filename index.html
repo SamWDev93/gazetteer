@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!----------------------------------------------------- HEAD SECTION --------------------------------------------------->
   <head>
     <!-- Meta Tags -->
     <meta charset="UTF-8" />
@@ -11,9 +12,6 @@
       name="description"
       content="A geolocation app that will provide the user with a variety of information on a selected country."
     />
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="libs/css/styles.css" />
 
     <!-- Leaflet CSS & EasyButton CDN -->
     <link
@@ -27,19 +25,19 @@
       href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"
     />
 
-    <!-- Bootstrap CSS & Icons CDN -->
+    <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
       integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
-    />
+
+      <!-- My CSS -->
+    <link rel="stylesheet" href="libs/css/styles.css" />
   </head>
 
+<!----------------------------------------------------- BODY SECTION --------------------------------------------------->
   <body>
     <!-- Loader -->
     <div id="loader-container"><div id="loader"></div></div>
@@ -241,10 +239,7 @@
               </tr>
               <tr>
                 <td>Current Exchange Rate:</td>
-                <td class="noCurrency">
-                  1 <span class="currencyName"></span> =
-                  <span class="exchangeRate"></span> British pound
-                </td>
+                <td class="exchangeRate"></td>
               </tr>
             </table>
           </div>
@@ -389,7 +384,7 @@
                 </td>
               </tr>
             </table>
-            <table class="noNews">
+            <table>
               <tr>
                 <td>
                   <a href="" class="firstNewsUrl"
@@ -521,6 +516,9 @@
       crossorigin=""
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/9b0dfef49e.js" crossorigin="anonymous"></script>
 
     <!-- JS -->
     <script src="libs/js/script.js"></script>
