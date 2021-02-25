@@ -6,9 +6,11 @@ $(window).on("load", function () {
 
 $(document).ready(() => {
   const successCallback = (position) => {
-    L.marker([position.coords.latitude, position.coords.longitude]).addTo(
-      mymap
-    );
+    L.marker([position.coords.latitude, position.coords.longitude], {
+      icon: userIcon,
+    }).addTo(mymap);
+
+    mymap.panTo([position.coords.latitude, position.coords.longitude]);
   };
 
   const errorCallback = (error) => {
@@ -102,6 +104,40 @@ var WaymarkedTrails_cycling = L.tileLayer(
       'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Map style: &copy; <a href="https://waymarkedtrails.org">waymarkedtrails.org</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
   }
 );
+var Thunderforest_MobileAtlas = L.tileLayer(
+  "https://{s}.tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey={apikey}",
+  {
+    attribution:
+      '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    apikey: "3bfafd83922741d79a4c36f18e1bdfe8",
+    maxZoom: 22,
+  }
+);
+
+var Jawg_Streets = L.tileLayer(
+  "https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token={accessToken}",
+  {
+    attribution:
+      '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    minZoom: 0,
+    maxZoom: 22,
+    subdomains: "abcd",
+    accessToken:
+      "35K3OEa1eVgfR0CPWGqsYVFMHuwPDEbyiDg9m7bj9WBpuLhjJJuHfdpKvCtYpcn4",
+  }
+);
+
+var issIcon = L.icon({
+  iconUrl: "./libs/images/iss.png",
+  iconSize: [100, 50],
+  iconAnchor: [50, 25],
+});
+
+var userIcon = L.icon({
+  iconUrl: "./libs/images/user-marker.png",
+  iconSize: [50, 50],
+  iconAnchor: [25, 25],
+});
 
 // Create map
 var mymap = L.map("mapid", {
@@ -112,7 +148,9 @@ var mymap = L.map("mapid", {
 
 var baseMaps = {
   "Streets Map": OpenStreetMap_Mapnik,
+  Sunny: Jawg_Streets,
   Dark: Stadia_AlidadeSmoothDark,
+  "Mobile Atlas": Thunderforest_MobileAtlas,
   "World Imagery": Esri_WorldImagery,
   Watercolor: Stamen_Watercolor,
 };
@@ -175,9 +213,14 @@ L.easyButton(
       type: "POST",
       dataType: "json",
       success: function (result) {
-        L.marker([result.iss.lat, result.iss.lng])
+        L.marker([result.iss.lat, result.iss.lng], {
+          icon: issIcon,
+        })
           .bindPopup("Current location of the International Space Station")
+          .openPopup()
           .addTo(mymap);
+
+        mymap.panTo([result.iss.lat, result.iss.lng]);
       },
       error: function (request, status, error) {
         console.log(error);
@@ -207,32 +250,10 @@ $.ajax({
   },
 });
 
-// Apply country border to map
-$("#selectCountry").change(function () {
-  $.ajax({
-    url: "libs/php/getCountryBorders.php",
-    type: "POST",
-    dataType: "json",
-    success: function (result) {
-      if (
-        $("#selectCountry").val() ==
-        result["data"]["features"][0]["properties"]["iso_a3"]
-      ) {
-        L.geoJSON(result["data"], {
-          style: function (feature) {
-            return { color: "#000" };
-          },
-        }).addTo(mymap);
-      }
-    },
-    error: function (request, status, error) {
-      console.log(error);
-    },
-  });
-});
-
 // Run getData.php and populate info tables
 $("#selectCountry").change(function () {
+  $("#loader-container").show();
+  $("#loader").show();
   $.ajax({
     url: "libs/php/getData.php",
     type: "POST",
@@ -329,8 +350,8 @@ $("#selectCountry").change(function () {
 
         // Latest News
         if (result.news == "N/A") {
-          $(".firstNewsTitle").html("No news available at this time");
-          $(".firstNewsDescription").html(" ");
+          $(".firstNewsTitle").html(" ");
+          $(".firstNewsDescription").html("No news available at this time");
           $(".secondNewsTitle").html(" ");
           $(".secondNewsDescription").html(" ");
           $(".thirdNewsTitle").html(" ");
@@ -352,10 +373,23 @@ $("#selectCountry").change(function () {
         $(".recovered").html(result["covid"]["recovered"]);
         $(".deaths").html(result["covid"]["deaths"]);
         $(".critical").html(result["covid"]["critical"]);
+
+        var border = result["border"];
+
+        var addedBorder = L.geoJSON(border, {
+          style: function (feature) {
+            return { color: "#D93838" };
+          },
+        }).addTo(mymap);
+        mymap.fitBounds(addedBorder.getBounds());
+        $("#loader-container").hide();
+        $("#loader").hide();
       }
     },
     error: function (request, status, error) {
       console.log(error);
+      $("#loader-container").hide();
+      $("#loader").hide();
     },
   });
 });

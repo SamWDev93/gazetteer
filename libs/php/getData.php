@@ -217,6 +217,18 @@
     $covid['critical'] = $covid_decode[0]['critical'];
     $covid['deaths'] = $covid_decode[0]['deaths'];
 
+    // Get Country Border
+    $geoJSON = json_decode(file_get_contents("../json/countryBorders.geo.json"), true);
+    $geoJsonCountries = $geoJSON['features'];
+    $countryBorder = null;
+
+    foreach($geoJsonCountries as $country){
+        if($country['properties']['iso_a2'] == $rest_countries['iso2']){
+            $countryBorder = $country['geometry'];
+        break;
+        }
+    }
+
     // Output
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
@@ -231,6 +243,7 @@
     $output['timezone'] = $timezone;
     $output['news'] = $news;
     $output['covid'] = $covid;
+    $output['border'] = $countryBorder;
     
     header("Content-Type: application/json; charset=UTF-8");
 
