@@ -35,7 +35,7 @@ $(document).ready(() => {
           $(".countryName").html(result["geoNames"]["info"]["name"]);
           $(".region").html(
             result["restCountries"]["region"] +
-              " | " +
+              ", " +
               result["restCountries"]["subregion"]
           );
           $(".area").html(
@@ -58,7 +58,7 @@ $(document).ready(() => {
           $(".driveOn").html(
             "The " + result["openCage"]["driveOn"] + " side of the road"
           );
-          $(".speedIn").html(result["openCage"]["speedIn"]);
+          $(".speedIn").html(result["openCage"]["speedIn"].toUpperCase());
           $(".webDomain").html(result["restCountries"]["webDomain"]);
           $(".firstWikiUrl").attr(
             "href",
@@ -75,6 +75,15 @@ $(document).ready(() => {
           $(".firstWikiTitle").html(result["geoNames"]["wiki"]["firstTitle"]);
           $(".secondWikiTitle").html(result["geoNames"]["wiki"]["secondTitle"]);
           $(".thirdWikiTitle").html(result["geoNames"]["wiki"]["thirdTitle"]);
+          $(".firstWikiSummary").html(
+            result["geoNames"]["wiki"]["firstWikiSummary"]
+          );
+          $(".secondWikiSummary").html(
+            result["geoNames"]["wiki"]["secondWikiSummary"]
+          );
+          $(".thirdWikiSummary").html(
+            result["geoNames"]["wiki"]["thirdWikiSummary"]
+          );
 
           // Currency Info
           $(".currencyName").html(result["restCountries"]["currency"]["name"]);
@@ -97,7 +106,7 @@ $(document).ready(() => {
           }
 
           // Weather Info
-          $(".icon").attr("src", result["openWeather"]["icon"]);
+          $(".weatherIcon").attr("src", result["openWeather"]["icon"]);
           $(".main").html(result["openWeather"]["main"]);
           $(".description").html(result["openWeather"]["description"]);
           $(".temp").html(result["openWeather"]["temp"] + "&deg;C");
@@ -117,6 +126,10 @@ $(document).ready(() => {
             $(".secondNewsDescription").html(" ");
             $(".thirdNewsTitle").html(" ");
             $(".thirdNewsDescription").html(" ");
+            $(".fourthNewsTitle").html(" ");
+            $(".fourthNewsDescription").html(" ");
+            $(".fifthNewsTitle").html(" ");
+            $(".fifthNewsDescription").html(" ");
           } else {
             $(".firstNewsUrl").attr("href", result["news"]["firstUrl"]);
             $(".firstNewsTitle").html(result["news"]["firstTitle"]);
@@ -129,6 +142,14 @@ $(document).ready(() => {
             $(".thirdNewsUrl").attr("href", result["news"]["thirdUrl"]);
             $(".thirdNewsTitle").html(result["news"]["thirdTitle"]);
             $(".thirdNewsDescription").html(result["news"]["thirdDescription"]);
+            $(".fourthNewsUrl").attr("href", result["news"]["fourthUrl"]);
+            $(".fourthNewsTitle").html(result["news"]["fourthTitle"]);
+            $(".fourthNewsDescription").html(
+              result["news"]["fourthDescription"]
+            );
+            $(".fifthNewsUrl").attr("href", result["news"]["fifthUrl"]);
+            $(".fifthNewsTitle").html(result["news"]["fifthTitle"]);
+            $(".fifthNewsDescription").html(result["news"]["fifthDescription"]);
           }
 
           // COVID-19 Info
@@ -429,7 +450,7 @@ $("#selectCountry").change(function () {
         $(".countryName").html(result["geoNames"]["info"]["name"]);
         $(".region").html(
           result["restCountries"]["region"] +
-            " | " +
+            ", " +
             result["restCountries"]["subregion"]
         );
         $(".area").html(
@@ -469,6 +490,15 @@ $("#selectCountry").change(function () {
         $(".firstWikiTitle").html(result["geoNames"]["wiki"]["firstTitle"]);
         $(".secondWikiTitle").html(result["geoNames"]["wiki"]["secondTitle"]);
         $(".thirdWikiTitle").html(result["geoNames"]["wiki"]["thirdTitle"]);
+        $(".firstWikiSummary").html(
+          result["geoNames"]["wiki"]["firstWikiSummary"]
+        );
+        $(".secondWikiSummary").html(
+          result["geoNames"]["wiki"]["secondWikiSummary"]
+        );
+        $(".thirdWikiSummary").html(
+          result["geoNames"]["wiki"]["thirdWikiSummary"]
+        );
 
         // Currency Info
         $(".currencyName").html(result["restCountries"]["currency"]["name"]);
@@ -491,7 +521,7 @@ $("#selectCountry").change(function () {
         }
 
         // Weather Info
-        $(".icon").attr("src", result["openWeather"]["icon"]);
+        $(".weatherIcon").attr("src", result["openWeather"]["icon"]);
         $(".main").html(result["openWeather"]["main"]);
         $(".description").html(result["openWeather"]["description"]);
         $(".temp").html(result["openWeather"]["temp"] + "&deg;C");
@@ -511,6 +541,10 @@ $("#selectCountry").change(function () {
           $(".secondNewsDescription").html(" ");
           $(".thirdNewsTitle").html(" ");
           $(".thirdNewsDescription").html(" ");
+          $(".fourthNewsTitle").html(" ");
+          $(".fourthNewsDescription").html(" ");
+          $(".fifthNewsTitle").html(" ");
+          $(".fifthNewsDescription").html(" ");
         } else {
           $(".firstNewsUrl").attr("href", result["news"]["firstUrl"]);
           $(".firstNewsTitle").html(result["news"]["firstTitle"]);
@@ -521,6 +555,12 @@ $("#selectCountry").change(function () {
           $(".thirdNewsUrl").attr("href", result["news"]["thirdUrl"]);
           $(".thirdNewsTitle").html(result["news"]["thirdTitle"]);
           $(".thirdNewsDescription").html(result["news"]["thirdDescription"]);
+          $(".fourthNewsUrl").attr("href", result["news"]["fourthUrl"]);
+          $(".fourthNewsTitle").html(result["news"]["fourthTitle"]);
+          $(".fourthNewsDescription").html(result["news"]["fourthDescription"]);
+          $(".fifthNewsUrl").attr("href", result["news"]["fifthUrl"]);
+          $(".fifthNewsTitle").html(result["news"]["fifthTitle"]);
+          $(".fifthNewsDescription").html(result["news"]["fifthDescription"]);
         }
 
         // COVID-19 Info

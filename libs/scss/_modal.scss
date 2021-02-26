@@ -1,3 +1,63 @@
-.countryFlag {
-  max-width: 150px;
+.modal-header {
+  .cross {
+    color: #d93838;
+  }
+}
+
+.modal-body {
+  table {
+    width: 100%;
+    text-align: center;
+
+    tr,
+    td {
+      width: 100%;
+    }
+
+    .countryFlag {
+      border: 1px solid black;
+      max-width: 150px;
+    }
+
+    .tableTitle {
+      font-weight: bold;
+      border-bottom: 1px solid #dee2e6;
+      padding-top: 1rem;
+    }
+
+    .space {
+      padding-top: 1rem;
+    }
+
+    td.firstNewsDescription,
+    td.secondNewsDescription,
+    td.thirdNewsDescription,
+    td.fourthNewsDescription {
+      padding-bottom: 1rem;
+    }
+  }
+
+  table.info {
+    margin: auto;
+    width: 75%;
+  }
+
+  a {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
+.modal-footer {
+  .btn {
+    color: #d93838;
+    background-color: transparent;
+    border: 1px solid #d93838;
+  }
+
+  .btn:hover {
+    color: white;
+    background-color: #d93838;
+    border: 1px solid #d93838;
+  }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!----------------------------------------------------- HEAD SECTION --------------------------------------------------->
+  <!----------------------------------------------------- HEAD SECTION --------------------------------------------------->
   <head>
     <!-- Meta Tags -->
     <meta charset="UTF-8" />
@@ -33,11 +33,11 @@
       crossorigin="anonymous"
     />
 
-      <!-- My CSS -->
+    <!-- My CSS -->
     <link rel="stylesheet" href="libs/css/styles.css" />
   </head>
 
-<!----------------------------------------------------- BODY SECTION --------------------------------------------------->
+  <!----------------------------------------------------- BODY SECTION --------------------------------------------------->
   <body>
     <!-- Loader -->
     <div id="loader-container"><div id="loader"></div></div>
@@ -48,9 +48,7 @@
       <a class="navbar-brand" href="#">
         <img
           src="gazetteer-logo.png"
-          width="175"
-          height="70"
-          class="d-inline-block align-top"
+          class="gazetteerLogo d-inline-block align-top"
           alt="Gazetteer Logo"
         />
       </a>
@@ -80,87 +78,131 @@
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="cross">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body justify-content-center">
             <table>
               <tr>
-                <td class="center">
+                <td>
                   <img src="" alt="" class="countryFlag" />
                 </td>
               </tr>
               <tr>
-                <td class="center">
+                <td>
                   <b class="countryName"></b>
                 </td>
               </tr>
+              <tr></tr>
+            </table>
+            <table class="info">
               <tr>
-                <td class="right">Region | Subregion:</td>
-                <td class="region left"></td>
+                <td class="tableTitle">Region</td>
               </tr>
               <tr>
-                <td class="right">Area:</td>
-                <td class="area left"></td>
+                <td class="region"></td>
               </tr>
               <tr>
-                <td class="right">Population:</td>
-                <td class="population left"></td>
+                <td class="tableTitle">Area</td>
               </tr>
               <tr>
-                <td class="right">Demonym:</td>
-                <td class="demonym left"></td>
+                <td class="area"></td>
               </tr>
               <tr>
-                <td class="right">Capital:</td>
-                <td class="capital left"></td>
+                <td class="tableTitle">Population</td>
               </tr>
               <tr>
-                <td class="right">Timezone:</td>
-                <td class="timezone left"></td>
+                <td class="population"></td>
               </tr>
               <tr>
-                <td class="right">Current Date & Time:</td>
-                <td class="datetime left"></td>
+                <td class="tableTitle">Demonym</td>
               </tr>
               <tr>
-                <td class="right">Coordinates (Lat/Lng):</td>
-                <td class="coordinates left"></td>
+                <td class="demonym"></td>
               </tr>
               <tr>
-                <td class="right">Calling Code:</td>
-                <td class="callCode left"></td>
+                <td class="tableTitle">Capital</td>
               </tr>
               <tr>
-                <td class="right">Drive On:</td>
-                <td class="driveOn left"></td>
+                <td class="capital"></td>
               </tr>
               <tr>
-                <td class="right">Speed Measured In:</td>
-                <td class="speedIn left"></td>
+                <td class="tableTitle">Timezone</td>
               </tr>
               <tr>
-                <td class="right">Web Domain:</td>
-                <td class="webDomain left"></td>
+                <td class="timezone"></td>
               </tr>
               <tr>
-                <td class="right">
-                  Top 3 Wikipedia Entries for "<span class="countryName"></span
-                  >":
+                <td class="tableTitle">Current Date & Time</td>
+              </tr>
+              <tr>
+                <td class="datetime"></td>
+              </tr>
+              <tr>
+                <td class="tableTitle">Coordinates (Lat/Lng)</td>
+              </tr>
+              <tr>
+                <td class="coordinates"></td>
+              </tr>
+              <tr>
+                <td class="tableTitle">Calling Code</td>
+              </tr>
+              <tr>
+                <td class="callCode"></td>
+              </tr>
+              <tr>
+                <td class="tableTitle">Drive On</td>
+              </tr>
+              <tr>
+                <td class="driveOn"></td>
+              </tr>
+              <tr>
+                <td class="tableTitle">Speed Measured In</td>
+              </tr>
+              <tr>
+                <td class="speedIn"></td>
+              </tr>
+              <tr>
+                <td class="tableTitle">Web Domain</td>
+              </tr>
+              <tr>
+                <td class="webDomain"></td>
+              </tr>
+              <tr>
+                <td class="tableTitle">
+                  Wikipedia Entries related to "<span class="countryName"></span
+                  >"
                 </td>
-                <td class="left">
-                  <ol>
-                    <li><a href="" class="firstWikiUrl"
-                      ><span class="firstWikiTitle"></span></a
-                    ></li>
-                    <li><a href="" class="secondWikiUrl"
-                      ><span class="secondWikiTitle"></span></a
-                    ></li>
-                    <li><a href="" class="thirdWikiUrl"
-                      ><span class="thirdWikiTitle"></span
-                    ></a></li>
-                  </ol>
+              </tr>
+              <tr>
+                <td class="space">
+                  <a href="" class="firstWikiUrl"
+                    ><span class="firstWikiTitle"></span
+                  ></a>
                 </td>
+              </tr>
+              <tr>
+                <td class="firstWikiSummary"></td>
+              </tr>
+              <tr>
+                <td class="space">
+                  <a href="" class="secondWikiUrl"
+                    ><span class="secondWikiTitle"></span
+                  ></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="secondWikiSummary"></td>
+              </tr>
+              <tr>
+                <td class="space">
+                  <a href="" class="thirdWikiUrl"
+                    ><span class="thirdWikiTitle"></span
+                  ></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="thirdWikiSummary"></td>
               </tr>
             </table>
           </div>
@@ -197,50 +239,68 @@
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="cross">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <table>
               <tr>
-                <td class="center">
+                <td>
                   <img src="" alt="" class="countryFlag" />
                 </td>
               </tr>
               <tr>
-                <td class="center">
+                <td>
                   <b class="countryName"></b>
                 </td>
               </tr>
+            </table>
+            <table class="info">
               <tr>
-                <td>Currency Name:</td>
+                <td class="tableTitle">Currency Name</td>
+              </tr>
+              <tr>
                 <td class="currencyName"></td>
               </tr>
               <tr>
-                <td>Subunit:</td>
+                <td class="tableTitle">Subunit</td>
+              </tr>
+              <tr>
                 <td class="subunit"></td>
               </tr>
               <tr>
-                <td>Smallest Denomination:</td>
-                <td><span class="smallDenom"></span> <span class="subunit"></span></span></td>
+                <td class="tableTitle">Smallest Denomination</td>
               </tr>
               <tr>
                 <td>
-                  Number of <span class="subunit"></span>'s to 1
-                  <span class="currencyName"></span>:
+                  <span class="smallDenom"></span> <span class="subunit"></span>
                 </td>
+              </tr>
+              <tr>
+                <td class="tableTitle">
+                  Number of <span class="subunit"></span>'s to 1
+                  <span class="currencyName"></span>
+                </td>
+              </tr>
+              <tr>
                 <td class="subToUnit"></td>
               </tr>
               <tr>
-                <td>Currency Symbol:</td>
+                <td class="tableTitle">Currency Symbol</td>
+              </tr>
+              <tr>
                 <td class="currencySymbol"></td>
               </tr>
               <tr>
-                <td>Currency Code:</td>
+                <td class="tableTitle">Currency Code</td>
+              </tr>
+              <tr>
                 <td class="currencyCode"></td>
               </tr>
               <tr>
-                <td>Current Exchange Rate:</td>
+                <td class="tableTitle">Current Exchange Rate</td>
+              </tr>
+              <tr>
                 <td class="exchangeRate"></td>
               </tr>
             </table>
@@ -278,63 +338,83 @@
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="cross">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <table>
               <tr>
-                <td class="center">
+                <td>
                   <img src="" alt="" class="countryFlag" />
                 </td>
               </tr>
               <tr>
-                <td class="center">
+                <td>
                   <b class="countryName"></b>
                 </td>
               </tr>
+            </table>
+            <table class="info">
               <tr>
                 <td>
-                  <img src="" class="icon" />
+                  <img src="" class="weatherIcon" />
                 </td>
               </tr>
               <tr>
-                <td class="main"></td>
+                <td><b class="main"></b></td>
               </tr>
               <tr>
-                <td>Description:</td>
+                <td class="tableTitle">Description</td>
+              </tr>
+              <tr>
                 <td class="description"></td>
               </tr>
               <tr>
-                <td>Temperature:</td>
+                <td class="tableTitle">Temperature</td>
+              </tr>
+              <tr>
                 <td class="temp"></td>
               </tr>
               <tr>
-                <td>Feels Like:</td>
+                <td class="tableTitle">Feels Like</td>
+              </tr>
+              <tr>
                 <td class="feelsLike"></td>
               </tr>
               <tr>
-                <td>Daily High:</td>
+                <td class="tableTitle">Daily High</td>
+              </tr>
+              <tr>
                 <td class="max"></td>
               </tr>
               <tr>
-                <td>Daily Low:</td>
+                <td class="tableTitle">Daily Low</td>
+              </tr>
+              <tr>
                 <td class="min"></td>
               </tr>
               <tr>
-                <td>Humidity:</td>
+                <td class="tableTitle">Humidity</td>
+              </tr>
+              <tr>
                 <td class="humidity"></td>
               </tr>
               <tr>
-                <td>Clouds:</td>
+                <td class="tableTitle">Clouds</td>
+              </tr>
+              <tr>
                 <td class="clouds"></td>
               </tr>
               <tr>
-                <td>Wind Speed:</td>
+                <td class="tableTitle">Wind Speed</td>
+              </tr>
+              <tr>
                 <td class="windSpeed"></td>
               </tr>
               <tr>
-                <td>Pressure:</td>
+                <td class="tableTitle">Pressure</td>
+              </tr>
+              <tr>
                 <td class="pressure"></td>
               </tr>
             </table>
@@ -363,14 +443,16 @@
       <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="latestNewsLabel">Latest News</h5>
+            <h5 class="modal-title" id="latestNewsLabel">
+              Latest News from "<span class="countryName"></span>"
+            </h5>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="cross">&times;</span>
             </button>
           </div>
           <div class="modal-body">
@@ -386,9 +468,9 @@
                 </td>
               </tr>
             </table>
-            <table>
+            <table class="info">
               <tr>
-                <td>
+                <td class="space">
                   <a href="" class="firstNewsUrl"
                     ><span class="firstNewsTitle"></span
                   ></a>
@@ -398,7 +480,7 @@
                 <td class="firstNewsDescription"></td>
               </tr>
               <tr>
-                <td>
+                <td class="space">
                   <a href="" class="secondNewsUrl"
                     ><span class="secondNewsTitle"></span
                   ></a>
@@ -408,7 +490,7 @@
                 <td class="secondNewsDescription"></td>
               </tr>
               <tr>
-                <td>
+                <td class="space">
                   <a href="" class="thirdNewsUrl"
                     ><span class="thirdNewsTitle"></span
                   ></a>
@@ -416,6 +498,26 @@
               </tr>
               <tr>
                 <td class="thirdNewsDescription"></td>
+              </tr>
+              <tr>
+                <td class="space">
+                  <a href="" class="fourthNewsUrl"
+                    ><span class="fourthNewsTitle"></span
+                  ></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="fourthNewsDescription"></td>
+              </tr>
+              <tr>
+                <td class="space">
+                  <a href="" class="fifthNewsUrl"
+                    ><span class="fifthNewsTitle"></span
+                  ></a>
+                </td>
+              </tr>
+              <tr>
+                <td class="fifthNewsDescription"></td>
               </tr>
             </table>
           </div>
@@ -450,35 +552,44 @@
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="cross">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <table>
               <tr>
-                <td class="center">
+                <td>
                   <img src="" alt="" class="countryFlag" />
                 </td>
               </tr>
               <tr>
-                <td class="center">
+                <td>
                   <b class="countryName"></b>
                 </td>
               </tr>
+            </table>
+            <table class="info">
               <tr>
-                <td>Confirmed Cases:</td>
+                <td class="tableTitle">Confirmed Cases</td>
+              </tr>
+              <tr>
                 <td class="confirmed"></td>
               </tr>
               <tr>
-                <td>Recovered:</td>
+                <td class="tableTitle">Recovered</td>
+              </tr>
+              <tr>
                 <td class="recovered"></td>
               </tr>
               <tr>
-                <td>Deaths:</td>
+                <td class="tableTitle">Deaths</td>
+              </tr>
                 <td class="deaths"></td>
               </tr>
               <tr>
-                <td>Critical</td>
+                <td class="tableTitle">Critical</td>
+              </tr>
+              <tr>
                 <td class="critical"></td>
               </tr>
             </table>
@@ -520,7 +631,10 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
     <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/9b0dfef49e.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/9b0dfef49e.js"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- JS -->
     <script src="libs/js/script.js"></script>

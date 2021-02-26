@@ -138,10 +138,13 @@
     $geonames_wiki = null;
     $geonames_wiki['firstTitle'] = $gnw_decode['geonames'][0]['title'];
     $geonames_wiki['firstWikiUrl'] = $gnw_decode['geonames'][0]['wikipediaUrl'];
+    $geonames_wiki['firstWikiSummary'] = $gnw_decode['geonames'][0]['summary'];
     $geonames_wiki['secondTitle'] = $gnw_decode['geonames'][1]['title'];
     $geonames_wiki['secondWikiUrl'] = $gnw_decode['geonames'][1]['wikipediaUrl'];
+    $geonames_wiki['secondWikiSummary'] = $gnw_decode['geonames'][1]['summary'];
     $geonames_wiki['thirdTitle'] = $gnw_decode['geonames'][2]['title'];
     $geonames_wiki['thirdWikiUrl'] = $gnw_decode['geonames'][2]['wikipediaUrl'];
+    $geonames_wiki['thirdWikiSummary'] = $gnw_decode['geonames'][2]['summary'];
 
     //Timezone Routine
     $tz_url='https://timezone.abstractapi.com/v1/current_time?api_key=10f6a0ab29b841cca8ada144c04e152d&location=' . $rest_countries['capital'] . ',' . $geonames_info['name'];
@@ -185,6 +188,12 @@
     $news['thirdTitle'] = $news_decode['articles'][2]['title'];
     $news['thirdDescription'] = $news_decode['articles'][2]['description'];
     $news['thirdUrl'] = $news_decode['articles'][2]['url'];
+    $news['fourthTitle'] = $news_decode['articles'][3]['title'];
+    $news['fourthDescription'] = $news_decode['articles'][3]['description'];
+    $news['fourthUrl'] = $news_decode['articles'][3]['url'];
+    $news['fifthTitle'] = $news_decode['articles'][4]['title'];
+    $news['fifthDescription'] = $news_decode['articles'][4]['description'];
+    $news['fifthUrl'] = $news_decode['articles'][4]['url'];
     }
 
     //COVID-19 Routine

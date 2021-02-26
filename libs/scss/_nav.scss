@@ -1,21 +1,35 @@
+$screen-sm-max: 545px;
+
+@mixin sm {
+  @media (max-width: #{$screen-sm-max}) {
+    @content;
+  }
+}
+
 .navbar {
   height: 10vh;
   font-size: 0.9rem;
 
-  .btn {
-    border: 1px solid #0085ff;
-    color: #0085ff;
-    font-size: 0.9rem;
+  .navbar-brand {
+    margin: 0;
+
+    @include sm {
+      width: 75px;
+    }
   }
 
-  .btn:hover {
-    background: #0085ff;
-    color: white;
+  img.gazetteerLogo {
+    width: 100%;
   }
 
   #selectCountry {
     padding: 0.25rem;
-    width: 20rem;
+    width: auto;
     text-align-last: center;
+    font-weight: bold;
+
+    @include sm {
+      width: 10rem;
+    }
   }
 }
