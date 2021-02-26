@@ -4,13 +4,159 @@ $(window).on("load", function () {
   $("#loader").hide();
 });
 
+// Retrieve users location on load
 $(document).ready(() => {
   const successCallback = (position) => {
-    L.marker([position.coords.latitude, position.coords.longitude], {
+    userLat = position.coords.latitude;
+    userLng = position.coords.longitude;
+    L.marker([userLat, userLng], {
       icon: userIcon,
     }).addTo(mymap);
+    mymap.panTo([userLat, userLng]);
 
-    mymap.panTo([position.coords.latitude, position.coords.longitude]);
+    $.ajax({
+      url: "libs/php/userCountryInfo.php",
+      type: "POST",
+      dataType: "json",
+      data: {
+        lat: userLat,
+        lng: userLng,
+      },
+      success: function (result) {
+        console.log(result);
+
+        if (result.status.name == "ok") {
+          // Country Info
+          $(".countryFlag").attr("src", result["restCountries"]["flag"]);
+          $(".countryFlag").attr(
+            "alt",
+            result["geoNames"]["info"]["name"] + " flag"
+          );
+          $(".countryName").html(result["geoNames"]["info"]["name"]);
+          $(".region").html(
+            result["restCountries"]["region"] +
+              " | " +
+              result["restCountries"]["subregion"]
+          );
+          $(".area").html(
+            Number(result["restCountries"]["area"]).toLocaleString("en") +
+              " km<sup>2</sup>"
+          );
+          $(".population").html(
+            Number(result["restCountries"]["population"]).toLocaleString("en")
+          );
+          $(".demonym").html(result["restCountries"]["demonym"]);
+          $(".capital").html(result["restCountries"]["capital"]);
+          $(".timezone").html(result["restCountries"]["timezone"]);
+          $(".datetime").html(result["timezone"]["datetime"]);
+          $(".coordinates").html(
+            result["restCountries"]["lat"] +
+              " / " +
+              result["restCountries"]["lng"]
+          );
+          $(".callCode").html("+" + result["restCountries"]["callCode"]);
+          $(".driveOn").html(
+            "The " + result["openCage"]["driveOn"] + " side of the road"
+          );
+          $(".speedIn").html(result["openCage"]["speedIn"]);
+          $(".webDomain").html(result["restCountries"]["webDomain"]);
+          $(".firstWikiUrl").attr(
+            "href",
+            result["geoNames"]["wiki"]["firstWikiUrl"]
+          );
+          $(".secondWikiUrl").attr(
+            "href",
+            result["geoNames"]["wiki"]["secondWikiUrl"]
+          );
+          $(".thirdWikiUrl").attr(
+            "href",
+            result["geoNames"]["wiki"]["thirdWikiUrl"]
+          );
+          $(".firstWikiTitle").html(result["geoNames"]["wiki"]["firstTitle"]);
+          $(".secondWikiTitle").html(result["geoNames"]["wiki"]["secondTitle"]);
+          $(".thirdWikiTitle").html(result["geoNames"]["wiki"]["thirdTitle"]);
+
+          // Currency Info
+          $(".currencyName").html(result["restCountries"]["currency"]["name"]);
+          $(".subunit").html(result["openCage"]["subunit"]);
+          $(".smallDenom").html(result["openCage"]["smallDenom"]);
+          $(".subToUnit").html(result["openCage"]["subToUnit"]);
+          $(".currencySymbol").html(
+            result["restCountries"]["currency"]["symbol"]
+          );
+          $(".currencyCode").html(result["restCountries"]["currency"]["code"]);
+          $(".exchangeRate").html();
+          if (result.exchangeRates != "N/A") {
+            $(".exchangeRate").html(
+              `1 ${result["restCountries"]["currency"]["name"]} = ${result["exchangeRates"]["rate"]} British pound`
+            );
+          } else {
+            $(".exchangeRate").html(
+              "No exchange rate information available at this time"
+            );
+          }
+
+          // Weather Info
+          $(".icon").attr("src", result["openWeather"]["icon"]);
+          $(".main").html(result["openWeather"]["main"]);
+          $(".description").html(result["openWeather"]["description"]);
+          $(".temp").html(result["openWeather"]["temp"] + "&deg;C");
+          $(".feelsLike").html(result["openWeather"]["feelsLike"] + "&deg;C");
+          $(".max").html(result["openWeather"]["max"] + "&deg;C");
+          $(".min").html(result["openWeather"]["min"] + "&deg;C");
+          $(".humidity").html(result["openWeather"]["humidity"] + "%");
+          $(".clouds").html(result["openWeather"]["clouds"] + "%");
+          $(".windSpeed").html(result["openWeather"]["windSpeed"] + " m/s");
+          $(".pressure").html(result["openWeather"]["pressure"] + " hPa");
+
+          // Latest News
+          if (result.news == "N/A") {
+            $(".firstNewsTitle").html(" ");
+            $(".firstNewsDescription").html("No news available at this time");
+            $(".secondNewsTitle").html(" ");
+            $(".secondNewsDescription").html(" ");
+            $(".thirdNewsTitle").html(" ");
+            $(".thirdNewsDescription").html(" ");
+          } else {
+            $(".firstNewsUrl").attr("href", result["news"]["firstUrl"]);
+            $(".firstNewsTitle").html(result["news"]["firstTitle"]);
+            $(".firstNewsDescription").html(result["news"]["firstDescription"]);
+            $(".secondNewsUrl").attr("href", result["news"]["secondUrl"]);
+            $(".secondNewsTitle").html(result["news"]["secondTitle"]);
+            $(".secondNewsDescription").html(
+              result["news"]["secondDescription"]
+            );
+            $(".thirdNewsUrl").attr("href", result["news"]["thirdUrl"]);
+            $(".thirdNewsTitle").html(result["news"]["thirdTitle"]);
+            $(".thirdNewsDescription").html(result["news"]["thirdDescription"]);
+          }
+
+          // COVID-19 Info
+          $(".confirmed").html(result["covid"]["confirmed"]);
+          $(".recovered").html(result["covid"]["recovered"]);
+          $(".deaths").html(result["covid"]["deaths"]);
+          $(".critical").html(result["covid"]["critical"]);
+
+          if (mymap.hasLayer(border)) {
+            mymap.removeLayer(border);
+          }
+
+          border = L.geoJSON(result["border"], {
+            style: function (feature) {
+              return { color: "#D93838" };
+            },
+          }).addTo(mymap);
+          mymap.fitBounds(border.getBounds());
+          $("#loader-container").hide();
+          $("#loader").hide();
+        }
+      },
+      error: function (request, status, error) {
+        console.log(error);
+        $("#loader-container").hide();
+        $("#loader").hide();
+      },
+    });
   };
 
   const errorCallback = (error) => {
@@ -26,7 +172,7 @@ $(document).ready(() => {
   });
 });
 
-// Map tiles
+// Map tiles & Overlays
 var Esri_WorldImagery = L.tileLayer(
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
   {
@@ -164,6 +310,11 @@ var mapOverlays = {
 
 L.control.layers(baseMaps, mapOverlays).addTo(mymap);
 
+var border;
+var issLocation;
+var userLat;
+var userLng;
+
 //EasyButtons
 L.easyButton(
   "<i class='fas fa-info-circle'></i>",
@@ -213,7 +364,11 @@ L.easyButton(
       type: "POST",
       dataType: "json",
       success: function (result) {
-        L.marker([result.iss.lat, result.iss.lng], {
+        if (issLocation) {
+          mymap.removeLayer(issLocation);
+        }
+
+        issLocation = L.marker([result.iss.lat, result.iss.lng], {
           icon: issIcon,
         })
           .bindPopup("Current location of the International Space Station")
@@ -374,14 +529,16 @@ $("#selectCountry").change(function () {
         $(".deaths").html(result["covid"]["deaths"]);
         $(".critical").html(result["covid"]["critical"]);
 
-        var border = result["border"];
+        if (mymap.hasLayer(border)) {
+          mymap.removeLayer(border);
+        }
 
-        var addedBorder = L.geoJSON(border, {
+        border = L.geoJSON(result["border"], {
           style: function (feature) {
             return { color: "#D93838" };
           },
         }).addTo(mymap);
-        mymap.fitBounds(addedBorder.getBounds());
+        mymap.fitBounds(border.getBounds());
         $("#loader-container").hide();
         $("#loader").hide();
       }

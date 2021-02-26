@@ -5,8 +5,28 @@
 
     $executionStartTime = microtime(true);
 
+    //OpenCage Routine
+    $oc_url='https://api.opencagedata.com/geocode/v1/json?q=' . $_REQUEST['lat'] . '+' . $_REQUEST['lng'] . '&key=c10468007be7424bb69d013e20efe738';
+
+    $oc_ch = curl_init();
+    curl_setopt($oc_ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($oc_ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($oc_ch, CURLOPT_URL, $oc_url);
+
+    $oc_result = curl_exec($oc_ch);
+
+    curl_close($oc_ch);
+
+    $oc_decode = json_decode($oc_result,true);
+    $openCage['code'] = $oc_decode['results'][0]['components']['ISO_3166-1_alpha-3'];
+    $openCage['smallDenom'] = $oc_decode['results'][0]['annotations']['currency']['smallest_denomination'];
+    $openCage['subunit'] = $oc_decode['results'][0]['annotations']['currency']['subunit'];
+    $openCage['subToUnit'] = $oc_decode['results'][0]['annotations']['currency']['subunit_to_unit'];
+    $openCage['driveOn'] = $oc_decode['results'][0]['annotations']['roadinfo']['drive_on'];
+    $openCage['speedIn'] = $oc_decode['results'][0]['annotations']['roadinfo']['speed_in'];
+
     // RESTCountries Routine
-    $rc_url='https://restcountries.eu/rest/v2/alpha/' . $_REQUEST['code'];
+    $rc_url='https://restcountries.eu/rest/v2/alpha/' . $openCage['code'];
 
 	$rc_ch = curl_init();
     curl_setopt($rc_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -37,7 +57,7 @@
     //OpenWeather Routine
     $ow_api_key = 'cdab949d45e6ad36e58acb23d320ef18';
 
-    $ow_url='https://api.openweathermap.org/data/2.5/weather?lat=' . $rest_countries['lat'] . '&lon=' . $rest_countries['lng'] . '&units=metric&appid=' . $ow_api_key;
+    $ow_url='https://api.openweathermap.org/data/2.5/weather?lat=' . $_REQUEST['lat'] . '&lon=' . $_REQUEST['lng'] . '&units=metric&appid=' . $ow_api_key;
 
     $ow_ch = curl_init();
     curl_setopt($ow_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -122,25 +142,6 @@
     $geonames_wiki['secondWikiUrl'] = $gnw_decode['geonames'][1]['wikipediaUrl'];
     $geonames_wiki['thirdTitle'] = $gnw_decode['geonames'][2]['title'];
     $geonames_wiki['thirdWikiUrl'] = $gnw_decode['geonames'][2]['wikipediaUrl'];
-
-    //OpenCage Routine
-    $oc_url='https://api.opencagedata.com/geocode/v1/json?q=' . $rest_countries['lat'] . ',' . $rest_countries['lng'] . '&key=c10468007be7424bb69d013e20efe738';
-
-    $oc_ch = curl_init();
-    curl_setopt($oc_ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($oc_ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($oc_ch, CURLOPT_URL, $oc_url);
-
-    $oc_result = curl_exec($oc_ch);
-
-    curl_close($oc_ch);
-
-    $oc_decode = json_decode($oc_result,true);
-    $openCage['smallDenom'] = $oc_decode['results'][0]['annotations']['currency']['smallest_denomination'];
-    $openCage['subunit'] = $oc_decode['results'][0]['annotations']['currency']['subunit'];
-    $openCage['subToUnit'] = $oc_decode['results'][0]['annotations']['currency']['subunit_to_unit'];
-    $openCage['driveOn'] = $oc_decode['results'][0]['annotations']['roadinfo']['drive_on'];
-    $openCage['speedIn'] = $oc_decode['results'][0]['annotations']['roadinfo']['speed_in'];
 
     //Timezone Routine
     $tz_url='https://timezone.abstractapi.com/v1/current_time?api_key=10f6a0ab29b841cca8ada144c04e152d&location=' . $rest_countries['capital'] . ',' . $geonames_info['name'];
