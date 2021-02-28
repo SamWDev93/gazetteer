@@ -106,6 +106,7 @@ $(document).ready(() => {
           }
 
           // Weather Info
+          $(".userLocation").html("your area");
           $(".weatherIcon").attr("src", result["openWeather"]["icon"]);
           $(".main").html(result["openWeather"]["main"]);
           $(".description").html(result["openWeather"]["description"]);
