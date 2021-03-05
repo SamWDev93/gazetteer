@@ -2,15 +2,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: white;
+  background: transparent;
   height: 100vh;
   width: 100vw;
-  z-index: 1000;
+  z-index: 999;
   position: fixed;
 
   #loader {
     border: 1rem solid #f3f3f3;
-    border-top: 1rem solid #d93838;
+    border-top: 1rem solid #60b0f4;
     border-radius: 50%;
     width: 120px;
     height: 120px;

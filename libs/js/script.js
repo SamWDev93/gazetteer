@@ -1,3 +1,9 @@
+var border;
+var issLocation;
+var userLat;
+var userLng;
+var cities;
+
 // Display loader until page is ready
 $(window).on("load", function () {
   $("#loader-container").hide();
@@ -11,7 +17,9 @@ $(document).ready(() => {
     userLng = position.coords.longitude;
     L.marker([userLat, userLng], {
       icon: userIcon,
-    }).addTo(mymap);
+    })
+      .bindPopup("You are here!")
+      .addTo(mymap);
     mymap.panTo([userLat, userLng]);
 
     $.ajax({
@@ -169,6 +177,20 @@ $(document).ready(() => {
             },
           }).addTo(mymap);
           mymap.fitBounds(border.getBounds());
+
+          if (cities) {
+            mymap.removeLayer(cities);
+          }
+
+          result["geoNames"]["cities"].forEach((city) => {
+            var cityMarker = L.marker([city.lat, city.lng], {
+              icon: cityIcon,
+            }).bindPopup(
+              `<b>${city.name}</b><br>Population: ${city.population}<br><a target=_blank href="${city.wikipedia}">Wikipedia</a>`
+            );
+            cities = L.layerGroup([cityMarker]).addTo(mymap);
+          });
+
           $("#loader-container").hide();
           $("#loader").hide();
         }
@@ -307,6 +329,12 @@ var userIcon = L.icon({
   iconAnchor: [25, 25],
 });
 
+var cityIcon = L.icon({
+  iconUrl: "./libs/images/city-marker.png",
+  iconSize: [50, 50],
+  iconAnchor: [25, 25],
+});
+
 // Create map
 var mymap = L.map("mapid", {
   center: [0, 0],
@@ -331,11 +359,6 @@ var mapOverlays = {
 };
 
 L.control.layers(baseMaps, mapOverlays).addTo(mymap);
-
-var border;
-var issLocation;
-var userLat;
-var userLng;
 
 //EasyButtons
 L.easyButton(
@@ -393,8 +416,7 @@ L.easyButton(
         issLocation = L.marker([result.iss.lat, result.iss.lng], {
           icon: issIcon,
         })
-          .bindPopup("Current location of the International Space Station")
-          .openPopup()
+          .bindPopup("Current location of the International Space Station.")
           .addTo(mymap);
 
         mymap.panTo([result.iss.lat, result.iss.lng]);
@@ -431,6 +453,33 @@ $.ajax({
 $("#selectCountry").change(function () {
   $("#loader-container").show();
   $("#loader").show();
+
+  $.ajax({
+    url: "libs/php/countryBorder.php",
+    type: "POST",
+    dataType: "json",
+    data: {
+      code: $("#selectCountry").val(),
+    },
+    success: function (result) {
+      console.log(result);
+
+      if (mymap.hasLayer(border)) {
+        mymap.removeLayer(border);
+      }
+
+      border = L.geoJSON(result["border"], {
+        style: function (feature) {
+          return { color: "#D93838" };
+        },
+      }).addTo(mymap);
+      mymap.fitBounds(border.getBounds());
+    },
+    error: function (request, status, error) {
+      console.log(error);
+    },
+  });
+
   $.ajax({
     url: "libs/php/getData.php",
     type: "POST",
@@ -442,6 +491,19 @@ $("#selectCountry").change(function () {
       console.log(result);
 
       if (result.status.name == "ok") {
+        if (cities) {
+          mymap.removeLayer(cities);
+        }
+
+        result["geoNames"]["cities"].forEach((city) => {
+          var cityMarker = L.marker([city.lat, city.lng], {
+            icon: cityIcon,
+          }).bindPopup(
+            `<b>${city.name}</b><br>Population: ${city.population}<br><a target=_blank href="${city.wikipedia}">Wikipedia</a>`
+          );
+          cities = L.layerGroup([cityMarker]).addTo(mymap);
+        });
+
         // Country Info
         $(".countryFlag").attr("src", result["restCountries"]["flag"]);
         $(".countryFlag").attr(
@@ -570,16 +632,6 @@ $("#selectCountry").change(function () {
         $(".deaths").html(result["covid"]["deaths"]);
         $(".critical").html(result["covid"]["critical"]);
 
-        if (mymap.hasLayer(border)) {
-          mymap.removeLayer(border);
-        }
-
-        border = L.geoJSON(result["border"], {
-          style: function (feature) {
-            return { color: "#D93838" };
-          },
-        }).addTo(mymap);
-        mymap.fitBounds(border.getBounds());
         $("#loader-container").hide();
         $("#loader").hide();
       }

@@ -126,7 +126,34 @@
     $geonames_wiki['thirdWikiUrl'] = $gnw_decode['geonames'][2]['wikipediaUrl'];
     $geonames_wiki['thirdWikiSummary'] = $gnw_decode['geonames'][2]['summary'];
 
-    //OpenCage Routine
+    // GeoNames Cities Routine
+    $gnc_url='http://api.geonames.org/citiesJSON?north=' . $geonames_info['north'] . '&south=' . $geonames_info['south'] . '&east=' . $geonames_info['east'] . '&west=' . $geonames_info['west'] . '&lang=en&maxRows=20&username=samw93';
+
+    $gnc_ch = curl_init();
+    curl_setopt($gnc_ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($gnc_ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($gnc_ch, CURLOPT_URL, $gnc_url);
+
+    $gnc_result = curl_exec($gnc_ch);
+
+    curl_close($gnc_ch);
+
+    $gnc_decode = json_decode($gnc_result,true);
+    $geonames_cities = [];
+    foreach($gnc_decode['geonames'] as $obj) {
+        if ($obj['countrycode'] == $rest_countries['iso2']) {
+            $city = null;
+            $city['name'] = $obj['name'];
+            $city['population'] = $obj['population'];
+            $city['wikipedia'] = $obj['wikipedia'];
+            $city['lat'] = $obj['lat'];
+            $city['lng'] = $obj['lng'];
+
+            array_push($geonames_cities, $city);
+        }
+    }
+
+    // OpenCage Routine
     $oc_url='https://api.opencagedata.com/geocode/v1/json?q=' . $rest_countries['lat'] . ',' . $rest_countries['lng'] . '&key=c10468007be7424bb69d013e20efe738';
 
     $oc_ch = curl_init();
@@ -139,11 +166,20 @@
     curl_close($oc_ch);
 
     $oc_decode = json_decode($oc_result,true);
-    $openCage['smallDenom'] = $oc_decode['results'][0]['annotations']['currency']['smallest_denomination'];
-    $openCage['subunit'] = $oc_decode['results'][0]['annotations']['currency']['subunit'];
-    $openCage['subToUnit'] = $oc_decode['results'][0]['annotations']['currency']['subunit_to_unit'];
-    $openCage['driveOn'] = $oc_decode['results'][0]['annotations']['roadinfo']['drive_on'];
-    $openCage['speedIn'] = $oc_decode['results'][0]['annotations']['roadinfo']['speed_in'];
+    $openCage = null;
+    if (!isset($oc_decode['results'][0]['annotations']['currency'])) {
+        $openCage['smallDenom'] = "N/A";
+        $openCage['subunit'] = "N/A";
+        $openCage['subToUnit'] = "N/A";
+        $openCage['driveOn'] = $oc_decode['results'][0]['annotations']['roadinfo']['drive_on'];
+        $openCage['speedIn'] = $oc_decode['results'][0]['annotations']['roadinfo']['speed_in'];
+    } else {
+        $openCage['smallDenom'] = $oc_decode['results'][0]['annotations']['currency']['smallest_denomination'];
+        $openCage['subunit'] = $oc_decode['results'][0]['annotations']['currency']['subunit'];
+        $openCage['subToUnit'] = $oc_decode['results'][0]['annotations']['currency']['subunit_to_unit'];
+        $openCage['driveOn'] = $oc_decode['results'][0]['annotations']['roadinfo']['drive_on'];
+        $openCage['speedIn'] = $oc_decode['results'][0]['annotations']['roadinfo']['speed_in'];
+    }
 
     //Timezone Routine
     $tz_url='https://timezone.abstractapi.com/v1/current_time?api_key=10f6a0ab29b841cca8ada144c04e152d&location=' . $rest_countries['capital'] . ',' . $geonames_info['name'];
@@ -224,18 +260,6 @@
     $covid['critical'] = $covid_decode[0]['critical'];
     $covid['deaths'] = $covid_decode[0]['deaths'];
 
-    // Get Country Border
-    $geoJSON = json_decode(file_get_contents("../json/countryBorders.geo.json"), true);
-    $geoJsonCountries = $geoJSON['features'];
-    $countryBorder = null;
-
-    foreach($geoJsonCountries as $country){
-        if($country['properties']['iso_a2'] == $rest_countries['iso2']){
-            $countryBorder = $country['geometry'];
-        break;
-        }
-    }
-
     // Output
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
@@ -246,11 +270,11 @@
     $output['exchangeRates'] = $exchange_rates;
     $output['geoNames']['info'] = $geonames_info;
     $output['geoNames']['wiki'] = $geonames_wiki;
+    $output['geoNames']['cities'] = $geonames_cities;
     $output['openCage'] = $openCage;
     $output['timezone'] = $timezone;
     $output['news'] = $news;
     $output['covid'] = $covid;
-    $output['border'] = $countryBorder;
     
     header("Content-Type: application/json; charset=UTF-8");
 
