@@ -9,6 +9,8 @@ $screen-sm-max: 545px;
 .navbar {
   height: 10vh;
   font-size: 0.9rem;
+  box-shadow: 0px 1px 10px #999;
+  z-index: 1005;
 
   .navbar-brand {
     margin: 0;
