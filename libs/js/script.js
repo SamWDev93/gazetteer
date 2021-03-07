@@ -1,4 +1,5 @@
 var border;
+var ISS = false;
 var issLocation;
 var userLat;
 var userLng;
@@ -63,35 +64,23 @@ $(document).ready(() => {
               result["restCountries"]["lng"]
           );
           $(".callCode").html("+" + result["restCountries"]["callCode"]);
-          $(".driveOn").html(
-            "The " + result["openCage"]["driveOn"] + " side of the road"
-          );
+          $(".driveOn").html("The " + result["openCage"]["driveOn"]);
           $(".speedIn").html(result["openCage"]["speedIn"].toUpperCase());
           $(".webDomain").html(result["restCountries"]["webDomain"]);
-          $(".firstWikiUrl").attr(
-            "href",
-            result["geoNames"]["wiki"]["firstWikiUrl"]
-          );
-          $(".secondWikiUrl").attr(
-            "href",
-            result["geoNames"]["wiki"]["secondWikiUrl"]
-          );
-          $(".thirdWikiUrl").attr(
-            "href",
-            result["geoNames"]["wiki"]["thirdWikiUrl"]
-          );
-          $(".firstWikiTitle").html(result["geoNames"]["wiki"]["firstTitle"]);
-          $(".secondWikiTitle").html(result["geoNames"]["wiki"]["secondTitle"]);
-          $(".thirdWikiTitle").html(result["geoNames"]["wiki"]["thirdTitle"]);
-          $(".firstWikiSummary").html(
-            result["geoNames"]["wiki"]["firstWikiSummary"]
-          );
-          $(".secondWikiSummary").html(
-            result["geoNames"]["wiki"]["secondWikiSummary"]
-          );
-          $(".thirdWikiSummary").html(
-            result["geoNames"]["wiki"]["thirdWikiSummary"]
-          );
+          if (result["geoNames"]["wiki"] == null) {
+            $(".wikiSummary").html("");
+            $(".wikiUrl").attr("href", "");
+            $(".wikiTitle").html("Unable to retrieve");
+          } else {
+            $(".wikiSummary").html(
+              result["geoNames"]["wiki"][0]["wikiSummary"]
+            );
+            $(".wikiUrl").attr(
+              "href",
+              result["geoNames"]["wiki"][0]["wikiUrl"]
+            );
+            $(".wikiTitle").html(result["geoNames"]["wiki"][0]["title"]);
+          }
 
           // Currency Info
           $(".currencyName").html(result["restCountries"]["currency"]["name"]);
@@ -118,10 +107,11 @@ $(document).ready(() => {
           $(".weatherIcon").attr("src", result["openWeather"]["icon"]);
           $(".main").html(result["openWeather"]["main"]);
           $(".description").html(result["openWeather"]["description"]);
-          $(".temp").html(result["openWeather"]["temp"] + "&deg;C");
-          $(".feelsLike").html(result["openWeather"]["feelsLike"] + "&deg;C");
-          $(".max").html(result["openWeather"]["max"] + "&deg;C");
-          $(".min").html(result["openWeather"]["min"] + "&deg;C");
+          $(".feelsLike").html(
+            Math.floor(result["openWeather"]["feelsLike"]) + "&deg;C"
+          );
+          $(".max").html(Math.floor(result["openWeather"]["max"]) + "&deg;C");
+          $(".min").html(Math.floor(result["openWeather"]["min"]) + "&deg;C");
           $(".humidity").html(result["openWeather"]["humidity"] + "%");
           $(".clouds").html(result["openWeather"]["clouds"] + "%");
           $(".windSpeed").html(result["openWeather"]["windSpeed"] + " m/s");
@@ -129,43 +119,94 @@ $(document).ready(() => {
 
           // Latest News
           if (result.news == "N/A") {
+            $(".firstNewsImage").attr("src", "");
             $(".firstNewsTitle").html(" ");
-            $(".firstNewsDescription").html("No news available at this time");
+            $(".firstNewsDescription").html(
+              "Unable to retrieve news from this country."
+            );
+            $(".firstNewsSource").html("N/A.");
+            $(".firstNewsUrl").attr("href", "");
+
+            $(".secondNewsImage").attr("src", "");
             $(".secondNewsTitle").html(" ");
-            $(".secondNewsDescription").html(" ");
+            $(".secondNewsDescription").html(
+              "Unable to retrieve news from this country."
+            );
+            $(".secondNewsSource").html("N/A.");
+            $(".secondNewsUrl").attr("href", "");
+
+            $(".thirdNewsImage").attr("src", "");
             $(".thirdNewsTitle").html(" ");
-            $(".thirdNewsDescription").html(" ");
+            $(".thirdNewsDescription").html(
+              "Unable to retrieve news from this country."
+            );
+            $(".thirdNewsSource").html("N/A.");
+            $(".thirdNewsUrl").attr("href", "");
+
+            $(".fourthNewsImage").attr("src", "");
             $(".fourthNewsTitle").html(" ");
-            $(".fourthNewsDescription").html(" ");
+            $(".fourthNewsDescription").html(
+              "Unable to retrieve news from this country."
+            );
+            $(".fourthNewsSource").html("N/A.");
+            $(".fourthNewsUrl").attr("href", "");
+
+            $(".fifthNewsImage").attr("src", "");
             $(".fifthNewsTitle").html(" ");
-            $(".fifthNewsDescription").html(" ");
+            $(".fifthNewsDescription").html(
+              "Unable to retrieve news from this country."
+            );
+            $(".fifthNewsSource").html("N/A.");
+            $(".fifthNewsUrl").attr("href", "");
           } else {
+            $(".firstNewsImage").attr("src", result["news"]["firstImageUrl"]);
             $(".firstNewsUrl").attr("href", result["news"]["firstUrl"]);
             $(".firstNewsTitle").html(result["news"]["firstTitle"]);
             $(".firstNewsDescription").html(result["news"]["firstDescription"]);
+            $(".firstNewsSource").html(result["news"]["firstSource"]);
+
+            $(".secondNewsImage").attr("src", result["news"]["secondImageUrl"]);
             $(".secondNewsUrl").attr("href", result["news"]["secondUrl"]);
             $(".secondNewsTitle").html(result["news"]["secondTitle"]);
             $(".secondNewsDescription").html(
               result["news"]["secondDescription"]
             );
+            $(".secondNewsSource").html(result["news"]["secondSource"]);
+
+            $(".thirdNewsImage").attr("src", result["news"]["thirdImageUrl"]);
             $(".thirdNewsUrl").attr("href", result["news"]["thirdUrl"]);
             $(".thirdNewsTitle").html(result["news"]["thirdTitle"]);
             $(".thirdNewsDescription").html(result["news"]["thirdDescription"]);
+            $(".thirdNewsSource").html(result["news"]["thirdSource"]);
+
+            $(".fourthNewsImage").attr("src", result["news"]["fourthImageUrl"]);
             $(".fourthNewsUrl").attr("href", result["news"]["fourthUrl"]);
             $(".fourthNewsTitle").html(result["news"]["fourthTitle"]);
             $(".fourthNewsDescription").html(
               result["news"]["fourthDescription"]
             );
+            $(".fourthNewsSource").html(result["news"]["fourthSource"]);
+
+            $(".fifthNewsImage").attr("src", result["news"]["fifthImageUrl"]);
             $(".fifthNewsUrl").attr("href", result["news"]["fifthUrl"]);
             $(".fifthNewsTitle").html(result["news"]["fifthTitle"]);
             $(".fifthNewsDescription").html(result["news"]["fifthDescription"]);
+            $(".fifthNewsSource").html(result["news"]["fifthSource"]);
           }
 
           // COVID-19 Info
-          $(".confirmed").html(result["covid"]["confirmed"]);
-          $(".recovered").html(result["covid"]["recovered"]);
-          $(".deaths").html(result["covid"]["deaths"]);
-          $(".critical").html(result["covid"]["critical"]);
+          $(".confirmed").html(
+            Number(result["covid"]["confirmed"]).toLocaleString("en")
+          );
+          $(".recovered").html(
+            Number(result["covid"]["recovered"]).toLocaleString("en")
+          );
+          $(".deaths").html(
+            Number(result["covid"]["deaths"]).toLocaleString("en")
+          );
+          $(".critical").html(
+            Number(result["covid"]["critical"]).toLocaleString("en")
+          );
 
           if (mymap.hasLayer(border)) {
             mymap.removeLayer(border);
@@ -178,7 +219,7 @@ $(document).ready(() => {
           }).addTo(mymap);
           mymap.fitBounds(border.getBounds());
 
-          if (cities) {
+          if (mymap.hasLayer(cities)) {
             mymap.removeLayer(cities);
           }
 
@@ -186,7 +227,11 @@ $(document).ready(() => {
             var cityMarker = L.marker([city.lat, city.lng], {
               icon: cityIcon,
             }).bindPopup(
-              `<b>${city.name}</b><br>Population: ${city.population}<br><a target=_blank href="${city.wikipedia}">Wikipedia</a>`
+              `<b class="popupTitle">${city.name}</b><br>Population: ${Number(
+                city.population
+              ).toLocaleString("en")}<br><a target=_blank href="${
+                city.wikipedia
+              } class="popupLink"">Wikipedia</a>`
             );
             cities = L.layerGroup([cityMarker]).addTo(mymap);
           });
@@ -419,7 +464,9 @@ L.easyButton(
           .bindPopup("Current location of the International Space Station.")
           .addTo(mymap);
 
-        mymap.panTo([result.iss.lat, result.iss.lng]);
+        mymap.panTo([result.iss.lat, result.iss.lng], {
+          animate: true,
+        });
       },
       error: function (request, status, error) {
         console.log(error);
@@ -491,7 +538,7 @@ $("#selectCountry").change(function () {
       console.log(result);
 
       if (result.status.name == "ok") {
-        if (cities) {
+        if (mymap.hasLayer(cities)) {
           mymap.removeLayer(cities);
         }
 
@@ -533,35 +580,18 @@ $("#selectCountry").change(function () {
             result["restCountries"]["lng"]
         );
         $(".callCode").html("+" + result["restCountries"]["callCode"]);
-        $(".driveOn").html(
-          "The " + result["openCage"]["driveOn"] + " side of the road"
-        );
+        $(".driveOn").html("The " + result["openCage"]["driveOn"]);
         $(".speedIn").html(result["openCage"]["speedIn"]);
         $(".webDomain").html(result["restCountries"]["webDomain"]);
-        $(".firstWikiUrl").attr(
-          "href",
-          result["geoNames"]["wiki"]["firstWikiUrl"]
-        );
-        $(".secondWikiUrl").attr(
-          "href",
-          result["geoNames"]["wiki"]["secondWikiUrl"]
-        );
-        $(".thirdWikiUrl").attr(
-          "href",
-          result["geoNames"]["wiki"]["thirdWikiUrl"]
-        );
-        $(".firstWikiTitle").html(result["geoNames"]["wiki"]["firstTitle"]);
-        $(".secondWikiTitle").html(result["geoNames"]["wiki"]["secondTitle"]);
-        $(".thirdWikiTitle").html(result["geoNames"]["wiki"]["thirdTitle"]);
-        $(".firstWikiSummary").html(
-          result["geoNames"]["wiki"]["firstWikiSummary"]
-        );
-        $(".secondWikiSummary").html(
-          result["geoNames"]["wiki"]["secondWikiSummary"]
-        );
-        $(".thirdWikiSummary").html(
-          result["geoNames"]["wiki"]["thirdWikiSummary"]
-        );
+        if (result["geoNames"]["wiki"] == null) {
+          $(".wikiSummary").html("");
+          $(".wikiUrl").attr("href", "");
+          $(".wikiTitle").html("Unable to retrieve");
+        } else {
+          $(".wikiSummary").html(result["geoNames"]["wiki"][0]["wikiSummary"]);
+          $(".wikiUrl").attr("href", result["geoNames"]["wiki"][0]["wikiUrl"]);
+          $(".wikiTitle").html(result["geoNames"]["wiki"][0]["title"]);
+        }
 
         // Currency Info
         $(".currencyName").html(result["restCountries"]["currency"]["name"]);
@@ -587,10 +617,11 @@ $("#selectCountry").change(function () {
         $(".weatherIcon").attr("src", result["openWeather"]["icon"]);
         $(".main").html(result["openWeather"]["main"]);
         $(".description").html(result["openWeather"]["description"]);
-        $(".temp").html(result["openWeather"]["temp"] + "&deg;C");
-        $(".feelsLike").html(result["openWeather"]["feelsLike"] + "&deg;C");
-        $(".max").html(result["openWeather"]["max"] + "&deg;C");
-        $(".min").html(result["openWeather"]["min"] + "&deg;C");
+        $(".feelsLike").html(
+          Math.floor(result["openWeather"]["feelsLike"]) + "&deg;C"
+        );
+        $(".max").html(Math.floor(result["openWeather"]["max"]) + "&deg;C");
+        $(".min").html(Math.floor(result["openWeather"]["min"]) + "&deg;C");
         $(".humidity").html(result["openWeather"]["humidity"] + "%");
         $(".clouds").html(result["openWeather"]["clouds"] + "%");
         $(".windSpeed").html(result["openWeather"]["windSpeed"] + " m/s");
@@ -598,39 +629,90 @@ $("#selectCountry").change(function () {
 
         // Latest News
         if (result.news == "N/A") {
+          $(".firstNewsImage").attr("src", "");
           $(".firstNewsTitle").html(" ");
-          $(".firstNewsDescription").html("No news available at this time");
+          $(".firstNewsDescription").html(
+            "Unable to retrieve news from this country."
+          );
+          $(".firstNewsSource").html("N/A.");
+          $(".firstNewsUrl").attr("href", "");
+
+          $(".secondNewsImage").attr("src", "");
           $(".secondNewsTitle").html(" ");
-          $(".secondNewsDescription").html(" ");
+          $(".secondNewsDescription").html(
+            "Unable to retrieve news from this country."
+          );
+          $(".secondNewsSource").html("N/A.");
+          $(".secondNewsUrl").attr("href", "");
+
+          $(".thirdNewsImage").attr("src", "");
           $(".thirdNewsTitle").html(" ");
-          $(".thirdNewsDescription").html(" ");
+          $(".thirdNewsDescription").html(
+            "Unable to retrieve news from this country."
+          );
+          $(".thirdNewsSource").html("N/A.");
+          $(".thirdNewsUrl").attr("href", "");
+
+          $(".fourthNewsImage").attr("src", "");
           $(".fourthNewsTitle").html(" ");
-          $(".fourthNewsDescription").html(" ");
+          $(".fourthNewsDescription").html(
+            "Unable to retrieve news from this country."
+          );
+          $(".fourthNewsSource").html("N/A.");
+          $(".fourthNewsUrl").attr("href", "");
+
+          $(".fifthNewsImage").attr("src", "");
           $(".fifthNewsTitle").html(" ");
-          $(".fifthNewsDescription").html(" ");
+          $(".fifthNewsDescription").html(
+            "Unable to retrieve news from this country."
+          );
+          $(".fifthNewsSource").html("N/A.");
+          $(".fifthNewsUrl").attr("href", "");
         } else {
+          $(".firstNewsImage").attr("src", result["news"]["firstImageUrl"]);
           $(".firstNewsUrl").attr("href", result["news"]["firstUrl"]);
           $(".firstNewsTitle").html(result["news"]["firstTitle"]);
           $(".firstNewsDescription").html(result["news"]["firstDescription"]);
+          $(".firstNewsSource").html(result["news"]["firstSource"]);
+
+          $(".secondNewsImage").attr("src", result["news"]["secondImageUrl"]);
           $(".secondNewsUrl").attr("href", result["news"]["secondUrl"]);
           $(".secondNewsTitle").html(result["news"]["secondTitle"]);
           $(".secondNewsDescription").html(result["news"]["secondDescription"]);
+          $(".secondNewsSource").html(result["news"]["secondSource"]);
+
+          $(".thirdNewsImage").attr("src", result["news"]["thirdImageUrl"]);
           $(".thirdNewsUrl").attr("href", result["news"]["thirdUrl"]);
           $(".thirdNewsTitle").html(result["news"]["thirdTitle"]);
           $(".thirdNewsDescription").html(result["news"]["thirdDescription"]);
+          $(".thirdNewsSource").html(result["news"]["thirdSource"]);
+
+          $(".fourthNewsImage").attr("src", result["news"]["fourthImageUrl"]);
           $(".fourthNewsUrl").attr("href", result["news"]["fourthUrl"]);
           $(".fourthNewsTitle").html(result["news"]["fourthTitle"]);
           $(".fourthNewsDescription").html(result["news"]["fourthDescription"]);
+          $(".fourthNewsSource").html(result["news"]["fourthSource"]);
+
+          $(".fifthNewsImage").attr("src", result["news"]["fifthImageUrl"]);
           $(".fifthNewsUrl").attr("href", result["news"]["fifthUrl"]);
           $(".fifthNewsTitle").html(result["news"]["fifthTitle"]);
           $(".fifthNewsDescription").html(result["news"]["fifthDescription"]);
+          $(".fifthNewsSource").html(result["news"]["fifthSource"]);
         }
 
         // COVID-19 Info
-        $(".confirmed").html(result["covid"]["confirmed"]);
-        $(".recovered").html(result["covid"]["recovered"]);
-        $(".deaths").html(result["covid"]["deaths"]);
-        $(".critical").html(result["covid"]["critical"]);
+        $(".confirmed").html(
+          Number(result["covid"]["confirmed"]).toLocaleString("en")
+        );
+        $(".recovered").html(
+          Number(result["covid"]["recovered"]).toLocaleString("en")
+        );
+        $(".deaths").html(
+          Number(result["covid"]["deaths"]).toLocaleString("en")
+        );
+        $(".critical").html(
+          Number(result["covid"]["critical"]).toLocaleString("en")
+        );
 
         $("#loader-container").hide();
         $("#loader").hide();

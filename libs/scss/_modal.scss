@@ -1,31 +1,55 @@
 .modal-header {
-  .cross {
-    color: #d93838;
-  }
-}
-
-.modal-body {
-  max-height: 70vh;
-  overflow-y: auto;
-
   table {
-    width: 100%;
-    text-align: center;
+    .title {
+      font-size: 1.25rem;
+    }
 
-    tr,
-    td {
-      width: 100%;
+    .center {
+      text-align: center;
     }
 
     .countryFlag {
       border: 1px solid black;
-      max-width: 150px;
+      max-width: 200px;
+    }
+  }
+}
+
+.modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+
+  table {
+    width: 100%;
+
+    .left {
+      font-weight: bold;
     }
 
-    .tableTitle {
-      font-weight: bold;
-      border-bottom: 1px solid #dee2e6;
-      padding-top: 1rem;
+    .center {
+      text-align: center;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .highLow {
+      width: 2rem;
+    }
+
+    .minMax {
+      width: auto;
+      margin: 0;
+      border-right: 1px solid black;
+    }
+
+    tr {
+      width: 100%;
+    }
+
+    td {
+      padding: 0.75rem;
     }
 
     .space {
@@ -40,13 +64,11 @@
     }
   }
 
-  table.info {
-    margin: auto;
-    width: 75%;
+  .card {
+    margin: 2rem;
   }
 
   a {
-    font-weight: bold;
     text-decoration: underline;
   }
 }

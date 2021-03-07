@@ -82,7 +82,6 @@
     $open_weather['main'] = $ow_decode['weather'][0]['main'];
     $open_weather['description'] = $ow_decode['weather'][0]['description'];
     $open_weather['icon'] = 'http://openweathermap.org/img/wn/' . $ow_decode['weather'][0]['icon'] . '@2x.png';
-    $open_weather['temp'] = $ow_decode['main']['temp'];
     $open_weather['feelsLike'] = $ow_decode['main']['feels_like'];
     $open_weather['min'] = $ow_decode['main']['temp_min'];
     $open_weather['max'] = $ow_decode['main']['temp_max'];
@@ -132,7 +131,7 @@
     $geonames_info['west'] = $gn_decode['geonames'][0]['west'];
     
     // GeoNames Wiki Routine
-    $gnw_url='http://api.geonames.org/wikipediaBoundingBoxJSON?north=' . $geonames_info['north'] . '&south=' . $geonames_info['south'] . '&east=' . $geonames_info['east'] . '&west=' . $geonames_info['west'] . '&username=samw93';
+    $gnw_url='http://api.geonames.org/wikipediaBoundingBoxJSON?north=' . $geonames_info['north'] . '&south=' . $geonames_info['south'] . '&east=' . $geonames_info['east'] . '&west=' . $geonames_info['west'] . '&maxRows=50&username=samw93';
 
     $gnw_ch = curl_init();
     curl_setopt($gnw_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -144,16 +143,17 @@
     curl_close($gnw_ch);
 
     $gnw_decode = json_decode($gnw_result,true);
-    $geonames_wiki = null;
-    $geonames_wiki['firstTitle'] = $gnw_decode['geonames'][0]['title'];
-    $geonames_wiki['firstWikiUrl'] = $gnw_decode['geonames'][0]['wikipediaUrl'];
-    $geonames_wiki['firstWikiSummary'] = $gnw_decode['geonames'][0]['summary'];
-    $geonames_wiki['secondTitle'] = $gnw_decode['geonames'][1]['title'];
-    $geonames_wiki['secondWikiUrl'] = $gnw_decode['geonames'][1]['wikipediaUrl'];
-    $geonames_wiki['secondWikiSummary'] = $gnw_decode['geonames'][1]['summary'];
-    $geonames_wiki['thirdTitle'] = $gnw_decode['geonames'][2]['title'];
-    $geonames_wiki['thirdWikiUrl'] = $gnw_decode['geonames'][2]['wikipediaUrl'];
-    $geonames_wiki['thirdWikiSummary'] = $gnw_decode['geonames'][2]['summary'];
+    $geonames_wiki = [];
+    foreach($gnw_decode['geonames'] as $obj) {
+        if ($obj['title'] == $geonames_info['name']) {
+            $wiki = null;
+            $wiki['title'] = $obj['title'];
+            $wiki['wikiUrl'] = $obj['wikipediaUrl'];
+            $wiki['wikiSummary'] = $obj['summary'];
+
+            array_push($geonames_wiki, $wiki);
+        }
+    }
 
     // GeoNames Cities Routine
     $gnc_url='http://api.geonames.org/citiesJSON?north=' . $geonames_info['north'] . '&south=' . $geonames_info['south'] . '&east=' . $geonames_info['east'] . '&west=' . $geonames_info['west'] . '&lang=en&maxRows=20&username=samw93';
@@ -215,21 +215,35 @@
     if ($news_decode['totalResults'] == 0) {
         $news = "N/A";
     } else {
-    $news['firstTitle'] = $news_decode['articles'][0]['title'];
-    $news['firstDescription'] = $news_decode['articles'][0]['description'];
-    $news['firstUrl'] = $news_decode['articles'][0]['url'];
-    $news['secondTitle'] = $news_decode['articles'][1]['title'];
-    $news['secondDescription'] = $news_decode['articles'][1]['description'];
-    $news['secondUrl'] = $news_decode['articles'][1]['url'];
-    $news['thirdTitle'] = $news_decode['articles'][2]['title'];
-    $news['thirdDescription'] = $news_decode['articles'][2]['description'];
-    $news['thirdUrl'] = $news_decode['articles'][2]['url'];
-    $news['fourthTitle'] = $news_decode['articles'][3]['title'];
-    $news['fourthDescription'] = $news_decode['articles'][3]['description'];
-    $news['fourthUrl'] = $news_decode['articles'][3]['url'];
-    $news['fifthTitle'] = $news_decode['articles'][4]['title'];
-    $news['fifthDescription'] = $news_decode['articles'][4]['description'];
-    $news['fifthUrl'] = $news_decode['articles'][4]['url'];
+        $news['firstTitle'] = $news_decode['articles'][0]['title'];
+        $news['firstDescription'] = $news_decode['articles'][0]['description'];
+        $news['firstUrl'] = $news_decode['articles'][0]['url'];
+        $news['firstImageUrl'] = $news_decode['articles'][0]['urlToImage'];
+        $news['firstSource'] = $news_decode['articles'][0]['source']['name'];
+    
+        $news['secondTitle'] = $news_decode['articles'][1]['title'];
+        $news['secondDescription'] = $news_decode['articles'][1]['description'];
+        $news['secondUrl'] = $news_decode['articles'][1]['url'];
+        $news['secondImageUrl'] = $news_decode['articles'][1]['urlToImage'];
+        $news['secondSource'] = $news_decode['articles'][1]['source']['name'];
+    
+        $news['thirdTitle'] = $news_decode['articles'][2]['title'];
+        $news['thirdDescription'] = $news_decode['articles'][2]['description'];
+        $news['thirdUrl'] = $news_decode['articles'][2]['url'];
+        $news['thirdImageUrl'] = $news_decode['articles'][2]['urlToImage'];
+        $news['thirdSource'] = $news_decode['articles'][2]['source']['name'];
+    
+        $news['fourthTitle'] = $news_decode['articles'][3]['title'];
+        $news['fourthDescription'] = $news_decode['articles'][3]['description'];
+        $news['fourthUrl'] = $news_decode['articles'][3]['url'];
+        $news['fourthImageUrl'] = $news_decode['articles'][3]['urlToImage'];
+        $news['fourthSource'] = $news_decode['articles'][3]['source']['name'];
+    
+        $news['fifthTitle'] = $news_decode['articles'][4]['title'];
+        $news['fifthDescription'] = $news_decode['articles'][4]['description'];
+        $news['fifthUrl'] = $news_decode['articles'][4]['url'];
+        $news['fifthImageUrl'] = $news_decode['articles'][4]['urlToImage'];
+        $news['fifthSource'] = $news_decode['articles'][4]['source']['name'];
     }
 
     //COVID-19 Routine

@@ -24,8 +24,14 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"
     />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+    />
 
     <!-- Bootstrap CSS -->
     <link
@@ -70,141 +76,93 @@
     >
       <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="countryInfoLabel">
-              Country Information
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true" class="cross">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body justify-content-center">
+          <div class="modal-header justify-content-center">
             <table>
               <tr>
-                <td>
+                <td class="center">
                   <img src="" alt="" class="countryFlag" />
                 </td>
               </tr>
               <tr>
-                <td>
-                  <b class="countryName"></b>
-                </td>
+                <td class="center title"><b class="countryName"></b></td>
               </tr>
-              <tr></tr>
+              <tr>
+                <td class="wikiSummary"></td>
+              </tr>
             </table>
-            <table class="info">
+          </div>
+          <div class="modal-body justify-content-center">
+            <table class="table-striped">
               <tr>
-                <td class="tableTitle">Region</td>
+                <td class="center"><i class="fas fa-globe-europe"></i></td>
+                <td class="left">Region:</td>
+                <td class="region right"></td>
               </tr>
               <tr>
-                <td class="region"></td>
+                <td class="center"><i class="fas fa-ruler"></i></td>
+                <td class="left">Area:</td>
+                <td class="area right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Area</td>
+                <td class="center"><i class="fas fa-users"></i></td>
+                <td class="left">Population:</td>
+                <td class="population right"></td>
               </tr>
               <tr>
-                <td class="area"></td>
+                <td class="center"><i class="fas fa-user-edit"></i></td>
+                <td class="left">Demonym:</td>
+                <td class="demonym right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Population</td>
+                <td class="center"><i class="fas fa-city"></i></td>
+                <td class="left">Capital:</td>
+                <td class="capital right"></td>
               </tr>
               <tr>
-                <td class="population"></td>
+                <td class="center"><i class="far fa-clock"></i></td>
+                <td class="left">Timezone:</td>
+                <td class="timezone right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Demonym</td>
+                <td class="center"><i class="far fa-calendar-alt"></i></td>
+                <td class="left">Current Date & Time:</td>
+                <td class="datetime right"></td>
               </tr>
               <tr>
-                <td class="demonym"></td>
+                <td class="center"><i class="far fa-compass"></i></td>
+                <td class="left">Coordinates (Lat/Lng):</td>
+                <td class="coordinates right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Capital</td>
+                <td class="center"><i class="fas fa-phone"></i></td>
+                <td class="left">Calling Code:</td>
+                <td class="callCode right"></td>
               </tr>
               <tr>
-                <td class="capital"></td>
+                <td class="center"><i class="fas fa-road"></i></td>
+                <td class="left">Drive On:</td>
+                <td class="driveOn right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Timezone</td>
+                <td class="center"><i class="fas fa-tachometer-alt"></i></td>
+                <td class="left">Speed Measured In:</td>
+                <td class="speedIn right"></td>
               </tr>
               <tr>
-                <td class="timezone"></td>
+                <td class="center"><i class="fas fa-desktop"></i></td>
+                <td class="left">Web Domain:</td>
+                <td class="webDomain right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Current Date & Time</td>
-              </tr>
-              <tr>
-                <td class="datetime"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Coordinates (Lat/Lng)</td>
-              </tr>
-              <tr>
-                <td class="coordinates"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Calling Code</td>
-              </tr>
-              <tr>
-                <td class="callCode"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Drive On</td>
-              </tr>
-              <tr>
-                <td class="driveOn"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Speed Measured In</td>
-              </tr>
-              <tr>
-                <td class="speedIn"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Web Domain</td>
-              </tr>
-              <tr>
-                <td class="webDomain"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">
-                  Wikipedia Entries related to "<span class="countryName"></span
-                  >"
+                <td class="center">
+                  <i class="fab fa-wikipedia-w"></i>
                 </td>
-              </tr>
-              <tr>
-                <td class="space">
-                  <a href="" target="_blank" class="firstWikiUrl"
-                    ><span class="firstWikiTitle"></span
+                <td class="left">Full Wikipedia Entry:</td>
+                <td class="right">
+                  <a href="" target="_blank" class="wikiUrl"
+                    ><span class="wikiTitle"></span
                   ></a>
                 </td>
-              </tr>
-              <tr>
-                <td class="firstWikiSummary"></td>
-              </tr>
-              <tr>
-                <td class="space">
-                  <a href="" target="_blank" class="secondWikiUrl"
-                    ><span class="secondWikiTitle"></span
-                  ></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="secondWikiSummary"></td>
-              </tr>
-              <tr>
-                <td class="space">
-                  <a href="" target="_blank" class="thirdWikiUrl"
-                    ><span class="thirdWikiTitle"></span
-                  ></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="thirdWikiSummary"></td>
               </tr>
             </table>
           </div>
@@ -231,79 +189,62 @@
     >
       <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="currencyInfoLabel">
-              Currency Information
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true" class="cross">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+          <div class="modal-header justify-content-center">
             <table>
               <tr>
-                <td>
+                <td class="center">
                   <img src="" alt="" class="countryFlag" />
                 </td>
               </tr>
               <tr>
-                <td>
+                <td class="center title">
                   <b class="countryName"></b>
+                  <b class="title">- Currency Information</b>
                 </td>
               </tr>
             </table>
-            <table class="info">
+          </div>
+          <div class="modal-body">
+            <table class="table-striped">
               <tr>
-                <td class="tableTitle">Currency Name</td>
+                <td class="center"><i class="fas fa-sort-alpha-down"></i></td>
+                <td class="left">Currency Name</td>
+                <td class="currencyName right"></td>
               </tr>
               <tr>
-                <td class="currencyName"></td>
+                <td class="center"><i class="far fa-money-bill-alt"></i></td>
+                <td class="left">Subunit</td>
+                <td class="subunit right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Subunit</td>
-              </tr>
-              <tr>
-                <td class="subunit"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Smallest Denomination</td>
-              </tr>
-              <tr>
-                <td>
+                <td class="center"><i class="fas fa-coins"></i></td>
+                <td class="left">Smallest Denomination</td>
+                <td class="right">
                   <span class="smallDenom"></span> <span class="subunit"></span>
                 </td>
               </tr>
               <tr>
-                <td class="tableTitle">
+                <td class="center"><i class="fas fa-equals"></i></td>
+                <td class="left">
                   Number of <span class="subunit"></span>'s to 1
                   <span class="currencyName"></span>
                 </td>
+                <td class="subToUnit right"></td>
               </tr>
               <tr>
-                <td class="subToUnit"></td>
+                <td class="center"><i class="fas fa-pound-sign"></i></td>
+                <td class="left">Currency Symbol</td>
+                <td class="currencySymbol right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Currency Symbol</td>
+                <td class="center"><i class="far fa-keyboard"></i></td>
+                <td class="left">Currency Code</td>
+                <td class="currencyCode right"></td>
               </tr>
               <tr>
-                <td class="currencySymbol"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Currency Code</td>
-              </tr>
-              <tr>
-                <td class="currencyCode"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Current Exchange Rate</td>
-              </tr>
-              <tr>
-                <td class="exchangeRate"></td>
+                <td class="center"><i class="fas fa-exchange-alt"></i></td>
+                <td class="left">Current Exchange Rate</td>
+                <td class="exchangeRate right"></td>
               </tr>
             </table>
           </div>
@@ -330,94 +271,70 @@
     >
       <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="weatherInfoLabel">
-              Weather in <span class="capital userLocation"></span>
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true" class="cross">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+          <div class="modal-header justify-content-center">
             <table>
               <tr>
-                <td>
+                <td class="center">
                   <img src="" alt="" class="countryFlag" />
                 </td>
               </tr>
               <tr>
-                <td>
-                  <b class="countryName"></b>
+                <td class="center title">
+                  <b class="title">Weather in </b
+                  ><b class="capital userLocation"></b>
                 </td>
               </tr>
             </table>
-            <table class="info">
+          </div>
+          <div class="modal-body">
+            <table>
               <tr>
-                <td>
+                <td class="right">
                   <img src="" class="weatherIcon" />
                 </td>
+                <td class="highLow">
+                  <table class="minMax">
+                    <tr>
+                      <td>
+                        <b class="max"></b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="min"></td>
+                    </tr>
+                  </table>
+                </td>
+                <td>
+                  <b class="main"></b> <br />
+                  <span class="description"></span>
+                </td>
+              </tr>
+            </table>
+            <table class="table-striped">
+              <tr>
+                <td class="center"><i class="fas fa-thermometer-half"></i></td>
+                <td class="left">Feels Like:</td>
+                <td class="feelsLike right"></td>
               </tr>
               <tr>
-                <td><b class="main"></b></td>
+                <td class="center"><i class="fas fa-wind"></i></td>
+                <td class="left">Wind Speed:</td>
+                <td class="windSpeed right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Description</td>
+                <td class="center"><i class="fas fa-cloud"></i></td>
+                <td class="left">Clouds:</td>
+                <td class="clouds right"></td>
               </tr>
               <tr>
-                <td class="description"></td>
+                <td class="center"><i class="fas fa-tint"></i></td>
+                <td class="left">Humidity:</td>
+                <td class="humidity right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Temperature</td>
-              </tr>
-              <tr>
-                <td class="temp"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Feels Like</td>
-              </tr>
-              <tr>
-                <td class="feelsLike"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Daily High</td>
-              </tr>
-              <tr>
-                <td class="max"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Daily Low</td>
-              </tr>
-              <tr>
-                <td class="min"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Humidity</td>
-              </tr>
-              <tr>
-                <td class="humidity"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Clouds</td>
-              </tr>
-              <tr>
-                <td class="clouds"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Wind Speed</td>
-              </tr>
-              <tr>
-                <td class="windSpeed"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Pressure</td>
-              </tr>
-              <tr>
-                <td class="pressure"></td>
+                <td class="center"><i class="fas fa-arrows-alt-v"></i></td>
+                <td class="left">Pressure:</td>
+                <td class="humidity right"></td>
               </tr>
             </table>
           </div>
@@ -444,20 +361,7 @@
     >
       <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="latestNewsLabel">
-              Latest News from "<span class="countryName"></span>"
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true" class="cross">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+          <div class="modal-header justify-content-center">
             <table>
               <tr>
                 <td class="center">
@@ -465,63 +369,82 @@
                 </td>
               </tr>
               <tr>
-                <td class="center">
-                  <b class="countryName"></b>
+                <td class="center title">
+                  <b class="countryName"></b><b class="title"> - Latest News</b>
                 </td>
               </tr>
             </table>
-            <table class="info">
-              <tr>
-                <td class="space">
-                  <a href="" target="_blank" class="firstNewsUrl"
-                    ><span class="firstNewsTitle"></span
-                  ></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="firstNewsDescription"></td>
-              </tr>
-              <tr>
-                <td class="space">
-                  <a href="" target="_blank" class="secondNewsUrl"
-                    ><span class="secondNewsTitle"></span
-                  ></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="secondNewsDescription"></td>
-              </tr>
-              <tr>
-                <td class="space">
-                  <a href="" target="_blank" class="thirdNewsUrl"
-                    ><span class="thirdNewsTitle"></span
-                  ></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="thirdNewsDescription"></td>
-              </tr>
-              <tr>
-                <td class="space">
-                  <a href="" target="_blank" class="fourthNewsUrl"
-                    ><span class="fourthNewsTitle"></span
-                  ></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="fourthNewsDescription"></td>
-              </tr>
-              <tr>
-                <td class="space">
-                  <a href="" target="_blank" class="fifthNewsUrl"
-                    ><span class="fifthNewsTitle"></span
-                  ></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="fifthNewsDescription"></td>
-              </tr>
-            </table>
+          </div>
+          <div class="modal-body justify-content-center">
+            <div class="card">
+              <img src="" class="card-img-top firstNewsImage" />
+              <div class="card-body">
+                <h5 class="card-title firstNewsTitle"></h5>
+                <p class="card-text firstNewsDescription"></p>
+                <p class="card-text">
+                  Source: <span class="firstNewsSource"></span>
+                </p>
+                <a href="" target="_blank" class="btn btn-primary firstNewsUrl"
+                  >Read more</a
+                >
+              </div>
+            </div>
+
+            <div class="card">
+              <img src="" class="card-img-top secondNewsImage" />
+              <div class="card-body">
+                <h5 class="card-title secondNewsTitle"></h5>
+                <p class="card-text secondNewsDescription"></p>
+                <p class="card-text">
+                  Source: <span class="secondNewsSource"></span>
+                </p>
+                <a href="" target="_blank" class="btn btn-primary secondNewsUrl"
+                  >Read more</a
+                >
+              </div>
+            </div>
+
+            <div class="card">
+              <img src="" class="card-img-top thirdNewsImage" />
+              <div class="card-body">
+                <h5 class="card-title thirdNewsTitle"></h5>
+                <p class="card-text thirdNewsDescription"></p>
+                <p class="card-text">
+                  Source: <span class="thirdNewsSource"></span>
+                </p>
+                <a href="" target="_blank" class="btn btn-primary thirdNewsUrl"
+                  >Read more</a
+                >
+              </div>
+            </div>
+
+            <div class="card">
+              <img src="" class="card-img-top fourthNewsImage" />
+              <div class="card-body">
+                <h5 class="card-title fourthNewsTitle"></h5>
+                <p class="card-text fourthNewsDescription"></p>
+                <p class="card-text">
+                  Source: <span class="fourthNewsSource"></span>
+                </p>
+                <a href="" target="_blank" class="btn btn-primary fourthNewsUrl"
+                  >Read more</a
+                >
+              </div>
+            </div>
+
+            <div class="card">
+              <img src="" class="card-img-top fifthNewsImage" />
+              <div class="card-body">
+                <h5 class="card-title fifthNewsTitle"></h5>
+                <p class="card-text fifthNewsDescription"></p>
+                <p class="card-text">
+                  Source: <span class="fifthNewsSource"></span>
+                </p>
+                <a href="" target="_blank" class="btn btn-primary fifthNewsUrl"
+                  >Read more</a
+                >
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -546,53 +469,42 @@
     >
       <div class="modal-dialog modal-sm modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="covid19Label">COVID-19 Information</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true" class="cross">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+          <div class="modal-header justify-content-center">
             <table>
               <tr>
-                <td>
+                <td class="center">
                   <img src="" alt="" class="countryFlag" />
                 </td>
               </tr>
               <tr>
-                <td>
-                  <b class="countryName"></b>
+                <td class="center title">
+                  <b class="countryName"></b
+                  ><b class="title"> - COVID19 Statistics </b>
                 </td>
               </tr>
             </table>
-            <table class="info">
+          </div>
+          <div class="modal-body">
+            <table class="table-striped">
               <tr>
-                <td class="tableTitle">Confirmed Cases</td>
+                <td class="center"><i class="fas fa-file-medical"></i></td>
+                <td class="left">Confirmed Cases:</td>
+                <td class="confirmed right"></td>
               </tr>
               <tr>
-                <td class="confirmed"></td>
+                <td class="center"><i class="far fa-heart"></i></td>
+                <td class="left">Recovered:</td>
+                <td class="recovered right"></td>
               </tr>
               <tr>
-                <td class="tableTitle">Recovered</td>
+                <td class="center"><i class="fas fa-feather-alt"></i></td>
+                <td class="left">Deaths:</td>
+                <td class="deaths right"></td>
               </tr>
               <tr>
-                <td class="recovered"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Deaths</td>
-              </tr>
-                <td class="deaths"></td>
-              </tr>
-              <tr>
-                <td class="tableTitle">Critical</td>
-              </tr>
-              <tr>
-                <td class="critical"></td>
+                <td class="center"><i class="far fa-hospital"></i></td>
+                <td class="left">Critical:</td>
+                <td class="critical right"></td>
               </tr>
             </table>
           </div>
