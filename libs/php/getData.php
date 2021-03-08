@@ -102,7 +102,7 @@
     $geonames_info['west'] = $gn_decode['geonames'][0]['west'];
     
     // GeoNames Wiki Routine
-    $gnw_url='http://api.geonames.org/wikipediaBoundingBoxJSON?north=' . $geonames_info['north'] . '&south=' . $geonames_info['south'] . '&east=' . $geonames_info['east'] . '&west=' . $geonames_info['west'] . '&maxRows=50&username=samw93';
+    $gnw_url='http://api.geonames.org/wikipediaBoundingBoxJSON?north=' . $geonames_info['north'] . '&south=' . $geonames_info['south'] . '&east=' . $geonames_info['east'] . '&west=' . $geonames_info['west'] . '&maxRows=30&username=samw93';
 
     $gnw_ch = curl_init();
     curl_setopt($gnw_ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -115,14 +115,16 @@
 
     $gnw_decode = json_decode($gnw_result,true);
     $geonames_wiki = [];
-    foreach($gnw_decode['geonames'] as $obj) {
-        if ($obj['title'] == $geonames_info['name']) {
-            $wiki = null;
-            $wiki['title'] = $obj['title'];
-            $wiki['wikiUrl'] = $obj['wikipediaUrl'];
-            $wiki['wikiSummary'] = $obj['summary'];
+    if (is_array($gnw_decode['geonames']) || is_object($gnw_decode['geonames'])) {
+        foreach($gnw_decode['geonames'] as $obj) {
+            if ($obj['title'] == $geonames_info['name']) {
+                $wiki = null;
+                $wiki['title'] = $obj['title'];
+                $wiki['wikiUrl'] = $obj['wikipediaUrl'];
+                $wiki['wikiSummary'] = $obj['summary'];
 
-            array_push($geonames_wiki, $wiki);
+                array_push($geonames_wiki, $wiki);
+            }
         }
     }
 
@@ -140,16 +142,18 @@
 
     $gnc_decode = json_decode($gnc_result,true);
     $geonames_cities = [];
-    foreach($gnc_decode['geonames'] as $obj) {
-        if ($obj['countrycode'] == $rest_countries['iso2']) {
-            $city = null;
-            $city['name'] = $obj['name'];
-            $city['population'] = $obj['population'];
-            $city['wikipedia'] = $obj['wikipedia'];
-            $city['lat'] = $obj['lat'];
-            $city['lng'] = $obj['lng'];
+    if (is_array($gnc_decode['geonames']) || is_object($gnc_decode['geonames'])) {
+        foreach($gnc_decode['geonames'] as $obj) {
+            if ($obj['countrycode'] == $rest_countries['iso2']) {
+                $city = null;
+                $city['name'] = $obj['name'];
+                $city['population'] = $obj['population'];
+                $city['wikipedia'] = $obj['wikipedia'];
+                $city['lat'] = $obj['lat'];
+                $city['lng'] = $obj['lng'];
 
-            array_push($geonames_cities, $city);
+                array_push($geonames_cities, $city);
+            }
         }
     }
 
