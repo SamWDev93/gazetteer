@@ -31,7 +31,7 @@ You can visit the live version [here.](https://gazetteer.samwelsh.co.uk/)
 ## How the Gazetteer works:
 
 1. Once the page has loaded, the user will be asked if it would like to allow the application to know their location.
-2. If the user grants permission, a marker will be placed on their location, the map will adjust to the country's location on the map, the country will be bordered and highlighted, and the information tables will be populated with information related to that country. If the user denies permission, the map will stay centered until the user selects a country.
+2. If the user grants permission, a marker will be placed on their location, the map will adjust to the country's location on the map, the country will be bordered and highlighted, city markers will be displayed, and the information tables will be populated with information related to that country. If the user denies permission, the map will stay centered until the user selects a country.
 3. The user can select a country from the dynamically populated select field in the top right of the screen. Again, the map will adjust to the country's location on the map, the country will be bordered and highlighted, and the information tables will be populated with information related to that country.
 4. The user can change the map tiles by using the tile layers button in the top right of the screen.
 5. In the top left of the screen, by clicking the easy buttons, the user can:
@@ -45,5 +45,5 @@ You can visit the live version [here.](https://gazetteer.samwelsh.co.uk/)
 
 ## Demonstration:
 
-![Gazetteer](https://user-images.githubusercontent.com/69762070/109432919-6bfb7980-7a05-11eb-9898-f80bec039471.gif)    
+![Gazetteer](https://user-images.githubusercontent.com/69762070/110307806-3e12c800-7ff7-11eb-8b9b-9993ae59a0e3.gif)   
     
