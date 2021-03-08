@@ -66,6 +66,22 @@
 
   .card {
     margin: 2rem;
+
+    .btn {
+      color: #60b0f4;
+      background-color: transparent;
+      border: 1px solid #60b0f4;
+    }
+
+    .btn:hover {
+      color: white;
+      background-color: #60b0f4;
+      border: 1px solid #60b0f4;
+    }
+
+    a {
+      text-decoration: none;
+    }
   }
 
   a {
