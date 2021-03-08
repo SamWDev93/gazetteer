@@ -538,7 +538,7 @@ $("#selectCountry").change(function () {
       console.log(result);
 
       if (result.status.name == "ok") {
-        if (mymap.hasLayer(cities)) {
+        if (cities) {
           mymap.removeLayer(cities);
         }
 
@@ -546,7 +546,11 @@ $("#selectCountry").change(function () {
           var cityMarker = L.marker([city.lat, city.lng], {
             icon: cityIcon,
           }).bindPopup(
-            `<b>${city.name}</b><br>Population: ${city.population}<br><a target=_blank href="${city.wikipedia}">Wikipedia</a>`
+            `<b>${city.name}</b><br>Population: ${Number(
+              city.population
+            ).toLocaleString("en")}<br><a target=_blank href="${
+              city.wikipedia
+            }">Wikipedia</a>`
           );
           cities = L.layerGroup([cityMarker]).addTo(mymap);
         });
