@@ -95,11 +95,19 @@
 
     $gn_decode = json_decode($gn_result,true);
     $geonames_info = null;
-    $geonames_info['name'] = $gn_decode['geonames'][0]['countryName'];
-    $geonames_info['north'] = $gn_decode['geonames'][0]['north'];
-    $geonames_info['south'] = $gn_decode['geonames'][0]['south'];
-    $geonames_info['east'] = $gn_decode['geonames'][0]['east'];
-    $geonames_info['west'] = $gn_decode['geonames'][0]['west'];
+     if ($gn_decode['geonames'][0]['countryName'] == "DR Congo") {
+        $geonames_info['name'] = "Democratic Republic of the Congo";
+        $geonames_info['north'] = $gn_decode['geonames'][0]['north'];
+        $geonames_info['south'] = $gn_decode['geonames'][0]['south'];
+        $geonames_info['east'] = $gn_decode['geonames'][0]['east'];
+        $geonames_info['west'] = $gn_decode['geonames'][0]['west'];
+     } else {
+        $geonames_info['name'] = $gn_decode['geonames'][0]['countryName'];
+        $geonames_info['north'] = $gn_decode['geonames'][0]['north'];
+        $geonames_info['south'] = $gn_decode['geonames'][0]['south'];
+        $geonames_info['east'] = $gn_decode['geonames'][0]['east'];
+        $geonames_info['west'] = $gn_decode['geonames'][0]['west'];
+     }
     
     // GeoNames Wiki Routine
     $gnw_url='http://api.geonames.org/wikipediaBoundingBoxJSON?north=' . $geonames_info['north'] . '&south=' . $geonames_info['south'] . '&east=' . $geonames_info['east'] . '&west=' . $geonames_info['west'] . '&maxRows=30&username=samw93';
@@ -115,17 +123,22 @@
 
     $gnw_decode = json_decode($gnw_result,true);
     $geonames_wiki = [];
-    if (is_array($gnw_decode['geonames']) || is_object($gnw_decode['geonames'])) {
+    if (isset($gnw_decode['geonames'])) {
         foreach($gnw_decode['geonames'] as $obj) {
-            if ($obj['title'] == $geonames_info['name']) {
+            if ($obj['title'] == $geonames_info['name'] || (str_contains($obj['title'], $geonames_info['name']) && (isset($obj['countryCode']) == $rest_countries['iso2'] || str_contains($obj['summary'], $geonames_info['name'])))) {
                 $wiki = null;
                 $wiki['title'] = $obj['title'];
                 $wiki['wikiUrl'] = $obj['wikipediaUrl'];
                 $wiki['wikiSummary'] = $obj['summary'];
-
-                array_push($geonames_wiki, $wiki);
+                $geonames_wiki[] = [$wiki['title'], $wiki['wikiUrl'], $wiki['wikiSummary']];
+                // array_push($geonames_wiki, $wiki)
+            } else {
+                $geonames_wiki = null;
             }
+            
         }
+    } else {
+        $geonames_wiki = null;
     }
 
     // GeoNames Cities Routine
@@ -142,7 +155,7 @@
 
     $gnc_decode = json_decode($gnc_result,true);
     $geonames_cities = [];
-    if (is_array($gnc_decode['geonames']) || is_object($gnc_decode['geonames'])) {
+    if (isset($gnc_decode['geonames'])) {
         foreach($gnc_decode['geonames'] as $obj) {
             if ($obj['countrycode'] == $rest_countries['iso2']) {
                 $city = null;
@@ -155,6 +168,8 @@
                 array_push($geonames_cities, $city);
             }
         }
+    } else {
+        $geonames_cities = null;
     }
 
     // OpenCage Routine
@@ -178,11 +193,18 @@
         $openCage['driveOn'] = $oc_decode['results'][0]['annotations']['roadinfo']['drive_on'];
         $openCage['speedIn'] = $oc_decode['results'][0]['annotations']['roadinfo']['speed_in'];
     } else {
-        $openCage['smallDenom'] = $oc_decode['results'][0]['annotations']['currency']['smallest_denomination'];
-        $openCage['subunit'] = $oc_decode['results'][0]['annotations']['currency']['subunit'];
-        $openCage['subToUnit'] = $oc_decode['results'][0]['annotations']['currency']['subunit_to_unit'];
-        $openCage['driveOn'] = $oc_decode['results'][0]['annotations']['roadinfo']['drive_on'];
-        $openCage['speedIn'] = $oc_decode['results'][0]['annotations']['roadinfo']['speed_in'];
+        if (!isset($oc_decode['results'][0]['annotations']['currency']['smallest_denomination'])) {
+            $openCage['smallDenom'] = " ";
+        } else {
+            $openCage['subToUnit'] = $oc_decode['results'][0]['annotations']['currency']['subunit_to_unit'];
+            $openCage['driveOn'] = $oc_decode['results'][0]['annotations']['roadinfo']['drive_on'];
+            $openCage['speedIn'] = $oc_decode['results'][0]['annotations']['roadinfo']['speed_in'];
+            if (!isset($oc_decode['results'][0]['annotations']['currency']['subunit'])) {
+                $openCage['subunit'] = "N/A";
+            } else {
+                $openCage['subunit'] = $oc_decode['results'][0]['annotations']['currency']['subunit'];
+            }
+        }
     }
 
     //Timezone Routine
@@ -199,7 +221,12 @@
 
     $tz_decode = json_decode($tz_result,true);
     $timezone = null;
-    $timezone['datetime'] = $tz_decode ['datetime'];
+    if (!isset($tz_decode['datetime'])) {
+        $timezone['datetime'] = null;
+    } else {
+        $timezone['datetime'] = $tz_decode['datetime'];
+    }
+    
 
     //News Routine
     $news_url='https://newsapi.org/v2/top-headlines?country=' . $rest_countries['iso2'] . '&apiKey=28a6da9206f946b78fe57038813fd730';
@@ -215,7 +242,7 @@
 
     $news_decode = json_decode($news_result,true);
     $news = null;
-    if ($news_decode['totalResults'] == 0) {
+    if (!isset($news_decode['totalResults']) || $news_decode['status'] == "error") {
         $news = "N/A";
     } else {
     $news['firstTitle'] = $news_decode['articles'][0]['title'];

@@ -4,6 +4,7 @@ var issLocation;
 var userLat;
 var userLng;
 var cities;
+var singleCity;
 
 // Display loader until page is ready
 $(window).on("load", function () {
@@ -57,7 +58,11 @@ $(document).ready(() => {
           $(".demonym").html(result["restCountries"]["demonym"]);
           $(".capital").html(result["restCountries"]["capital"]);
           $(".timezone").html(result["restCountries"]["timezone"]);
-          $(".datetime").html(result["timezone"]["datetime"]);
+          if (result["timezone"]["datetime"] == null) {
+            $(".datetime").html("Unable to retrieve local date & time.");
+          } else {
+            $(".datetime").html(result["timezone"]["datetime"]);
+          }
           $(".coordinates").html(
             result["restCountries"]["lat"] +
               " / " +
@@ -67,7 +72,10 @@ $(document).ready(() => {
           $(".driveOn").html("The " + result["openCage"]["driveOn"]);
           $(".speedIn").html(result["openCage"]["speedIn"].toUpperCase());
           $(".webDomain").html(result["restCountries"]["webDomain"]);
-          if (result["geoNames"]["wiki"] == null) {
+          if (
+            result["geoNames"]["wiki"] == null ||
+            result["geoNames"]["wiki"] == undefined
+          ) {
             $(".wikiSummary").html("");
             $(".wikiUrl").attr("href", "");
             $(".wikiTitle").html("Unable to retrieve");
@@ -223,18 +231,20 @@ $(document).ready(() => {
             mymap.removeLayer(cities);
           }
 
-          result["geoNames"]["cities"].forEach((city) => {
-            var cityMarker = L.marker([city.lat, city.lng], {
-              icon: cityIcon,
-            }).bindPopup(
-              `<b class="popupTitle">${city.name}</b><br>Population: ${Number(
-                city.population
-              ).toLocaleString("en")}<br><a target=_blank href="${
-                city.wikipedia
-              } class="popupLink"">Wikipedia</a>`
-            );
-            cities = L.layerGroup([cityMarker]).addTo(mymap);
-          });
+          if (result["geoNames"]["cities"] != null) {
+            result["geoNames"]["cities"].forEach((city) => {
+              var cityMarker = L.marker([city.lat, city.lng], {
+                icon: cityIcon,
+              }).bindPopup(
+                `<b class="popupTitle">${city.name}</b><br>Population: ${Number(
+                  city.population
+                ).toLocaleString("en")}<br><a target=_blank href="https://${
+                  city.wikipedia
+                } class="popupLink"">Wikipedia</a>`
+              );
+              cities = L.layerGroup([cityMarker]).addTo(mymap);
+            });
+          }
 
           $("#loader-container").hide();
           $("#loader").hide();
@@ -542,18 +552,28 @@ $("#selectCountry").change(function () {
           mymap.removeLayer(cities);
         }
 
-        result["geoNames"]["cities"].forEach((city) => {
-          var cityMarker = L.marker([city.lat, city.lng], {
-            icon: cityIcon,
-          }).bindPopup(
-            `<b>${city.name}</b><br>Population: ${Number(
-              city.population
-            ).toLocaleString("en")}<br><a target=_blank href="${
-              city.wikipedia
-            }">Wikipedia</a>`
+        if (result["geoNames"]["cities"] != null) {
+          result["geoNames"]["cities"].forEach((city) => {
+            var cityMarker = L.marker([city.lat, city.lng], {
+              icon: cityIcon,
+            }).bindPopup(
+              `<b class="popupTitle">${city.name}</b><br>Population: ${Number(
+                city.population
+              ).toLocaleString("en")}<br><a target=_blank href="https://${
+                city.wikipedia
+              } class="popupLink"">Wikipedia</a>`
+            );
+            cities = L.layerGroup([cityMarker]).addTo(mymap);
+          });
+        } else {
+          singleCity = L.marker(
+            [result["restCountries"]["lat"], result["restCountries"]["lng"]],
+            {
+              icon: cityIcon,
+            }
           );
-          cities = L.layerGroup([cityMarker]).addTo(mymap);
-        });
+          singleCity.addTo(mymap);
+        }
 
         // Country Info
         $(".countryFlag").attr("src", result["restCountries"]["flag"]);
@@ -577,7 +597,11 @@ $("#selectCountry").change(function () {
         $(".demonym").html(result["restCountries"]["demonym"]);
         $(".capital").html(result["restCountries"]["capital"]);
         $(".timezone").html(result["restCountries"]["timezone"]);
-        $(".datetime").html(result["timezone"]["datetime"]);
+        if (result["timezone"]["datetime"] == null) {
+          $(".datetime").html("Unable to retrieve local date & time.");
+        } else {
+          $(".datetime").html(result["timezone"]["datetime"]);
+        }
         $(".coordinates").html(
           result["restCountries"]["lat"] +
             " / " +
@@ -587,7 +611,10 @@ $("#selectCountry").change(function () {
         $(".driveOn").html("The " + result["openCage"]["driveOn"]);
         $(".speedIn").html(result["openCage"]["speedIn"]);
         $(".webDomain").html(result["restCountries"]["webDomain"]);
-        if (result["geoNames"]["wiki"] == null) {
+        if (
+          result["geoNames"]["wiki"] == null ||
+          typeof result["geoNames"]["wiki"] == "undefined"
+        ) {
           $(".wikiSummary").html("");
           $(".wikiUrl").attr("href", "");
           $(".wikiTitle").html("Unable to retrieve");

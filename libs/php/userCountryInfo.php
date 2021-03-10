@@ -144,7 +144,7 @@
 
     $gnw_decode = json_decode($gnw_result,true);
     $geonames_wiki = [];
-    if (is_array($gnw_decode['geonames']) || is_object($gnw_decode['geonames'])) {
+    if (isset($gnw_decode['geonames']) || is_array($gnw_decode['geonames']) || is_object($gnw_decode['geonames'])) {
         foreach($gnw_decode['geonames'] as $obj) {
             if ($obj['title'] == $geonames_info['name']) {
                 $wiki = null;
@@ -155,6 +155,8 @@
                 array_push($geonames_wiki, $wiki);
             }
         }
+    } else {
+        $geonames_wiki = [];
     }
 
     // GeoNames Cities Routine
@@ -171,7 +173,7 @@
 
     $gnc_decode = json_decode($gnc_result,true);
     $geonames_cities = [];
-    if (is_array($gnc_decode['geonames']) || is_object($gnc_decode['geonames'])) {
+    if (isset($gnc_decode['geonames']) || is_array($gnc_decode['geonames']) || is_object($gnc_decode['geonames'])) {
         foreach($gnc_decode['geonames'] as $obj) {
             if ($obj['countrycode'] == $rest_countries['iso2']) {
                 $city = null;
@@ -184,6 +186,8 @@
                 array_push($geonames_cities, $city);
             }
         }
+    } else {
+        $geonames_cities = null;
     }
 
     //Timezone Routine
@@ -200,7 +204,11 @@
 
     $tz_decode = json_decode($tz_result,true);
     $timezone = null;
-    $timezone['datetime'] = $tz_decode ['datetime'];
+    if (!isset($tz_decode['datetime'])) {
+        $timezone['datetime'] = null;
+    } else {
+        $timezone['datetime'] = $tz_decode['datetime'];
+    }
 
     //News Routine
     $news_url='https://newsapi.org/v2/top-headlines?country=' . $rest_countries['iso2'] . '&apiKey=28a6da9206f946b78fe57038813fd730';
@@ -215,8 +223,9 @@
     curl_close($news_ch);
 
     $news_decode = json_decode($news_result,true);
+
     $news = null;
-    if ($news_decode['totalResults'] == 0) {
+    if ($news_decode['totalResults'] == 0 || $news_decode['status'] == "error") {
         $news = "N/A";
     } else {
         $news['firstTitle'] = $news_decode['articles'][0]['title'];
