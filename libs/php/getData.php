@@ -131,7 +131,6 @@
                 $wiki['wikiUrl'] = $obj['wikipediaUrl'];
                 $wiki['wikiSummary'] = $obj['summary'];
                 $geonames_wiki[] = [$wiki['title'], $wiki['wikiUrl'], $wiki['wikiSummary']];
-                // array_push($geonames_wiki, $wiki)
             } else {
                 $geonames_wiki = null;
             }

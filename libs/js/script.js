@@ -1,5 +1,4 @@
 var border;
-var ISS = false;
 var issLocation;
 var userLat;
 var userLng;
@@ -227,7 +226,7 @@ $(document).ready(() => {
           }).addTo(mymap);
           mymap.fitBounds(border.getBounds());
 
-          if (mymap.hasLayer(cities)) {
+          if (cities != null) {
             mymap.removeLayer(cities);
           }
 
@@ -240,9 +239,9 @@ $(document).ready(() => {
                   city.population
                 ).toLocaleString("en")}<br><a target=_blank href="https://${
                   city.wikipedia
-                } class="popupLink"">Wikipedia</a>`
+                }">Wikipedia</a>`
               );
-              cities = L.layerGroup([cityMarker]).addTo(mymap);
+              var cities = L.featureGroup([cityMarker]).addTo(mymap);
             });
           }
 
@@ -548,7 +547,7 @@ $("#selectCountry").change(function () {
       console.log(result);
 
       if (result.status.name == "ok") {
-        if (cities) {
+        if (cities != null) {
           mymap.removeLayer(cities);
         }
 
@@ -561,9 +560,9 @@ $("#selectCountry").change(function () {
                 city.population
               ).toLocaleString("en")}<br><a target=_blank href="https://${
                 city.wikipedia
-              } class="popupLink"">Wikipedia</a>`
+              }">Wikipedia</a>`
             );
-            cities = L.layerGroup([cityMarker]).addTo(mymap);
+            var cities = L.featureGroup([cityMarker]).addTo(mymap);
           });
         } else {
           singleCity = L.marker(
