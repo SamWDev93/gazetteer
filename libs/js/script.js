@@ -226,7 +226,7 @@ $(document).ready(() => {
           }).addTo(mymap);
           mymap.fitBounds(border.getBounds());
 
-          if (cities != null) {
+          if (mymap.hasLayer(cities)) {
             mymap.removeLayer(cities);
           }
 
@@ -241,7 +241,8 @@ $(document).ready(() => {
                   city.wikipedia
                 }">Wikipedia</a>`
               );
-              var cities = L.featureGroup([cityMarker]).addTo(mymap);
+
+              cities = L.featureGroup([cityMarker]).addTo(mymap);
             });
           }
 
@@ -562,7 +563,11 @@ $("#selectCountry").change(function () {
                 city.wikipedia
               }">Wikipedia</a>`
             );
-            var cities = L.featureGroup([cityMarker]).addTo(mymap);
+            cities.eachLayer(function (layer) {
+              cities.removeLayer(layer);
+            });
+
+            cities = L.featureGroup([cityMarker]).addTo(mymap);
           });
         } else {
           singleCity = L.marker(
