@@ -6,6 +6,7 @@ var userMarker;
 var cityMarker;
 var cities = L.featureGroup();
 var singleCity;
+var startTracking;
 
 // Display loader until page is ready
 $(window).on("load", function () {
@@ -458,35 +459,64 @@ L.easyButton(
   "COVID-19 Information"
 ).addTo(mymap);
 
-L.easyButton(
-  "<i class='fas fa-satellite'></i>",
-  function () {
-    $.ajax({
-      url: "libs/php/findISS.php",
-      type: "POST",
-      dataType: "json",
-      success: function (result) {
-        if (issLocation) {
-          mymap.removeLayer(issLocation);
-        }
+function trackISS() {
+  $.ajax({
+    url: "libs/php/findISS.php",
+    type: "POST",
+    dataType: "json",
+    success: function (result) {
+      if (issLocation) {
+        mymap.removeLayer(issLocation);
+      }
 
-        issLocation = L.marker([result.iss.lat, result.iss.lng], {
-          icon: issIcon,
-        })
-          .bindPopup("Current location of the International Space Station.")
-          .addTo(mymap);
+      issLocation = L.marker([result.iss.lat, result.iss.lng], {
+        icon: issIcon,
+      })
+        .bindPopup("Current location of the International Space Station.")
+        .addTo(mymap);
 
-        mymap.panTo([result.iss.lat, result.iss.lng], {
-          animate: true,
-        });
+      mymap.panTo([result.iss.lat, result.iss.lng], {
+        animate: true,
+      });
+    },
+    error: function (request, status, error) {
+      console.log(error);
+    },
+  });
+}
+
+L.easyButton({
+  id: "startISS",
+  position: "topleft",
+  states: [
+    {
+      stateName: "start-tracking",
+      onClick: function (button, mymap) {
+        trackISS();
+        startTracking = setInterval(trackISS, 5000);
       },
-      error: function (request, status, error) {
-        console.log(error);
+      title: "Track ISS",
+      icon: "fa-satellite",
+    },
+  ],
+}).addTo(mymap);
+
+L.easyButton({
+  id: "stopISS",
+  position: "topleft",
+  states: [
+    {
+      stateName: "stop-tracking",
+      onClick: function (button, mymap) {
+        clearInterval(startTracking);
+        mymap.removeLayer(issLocation);
+        mymap.fitBounds(border.getBounds());
       },
-    });
-  },
-  "Track ISS"
-).addTo(mymap);
+      title: "Stop Tracking ISS",
+      icon: "fa-stop",
+    },
+  ],
+}).addTo(mymap);
 
 // Populate select field
 $.ajax({
