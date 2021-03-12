@@ -2,7 +2,9 @@ var border;
 var issLocation;
 var userLat;
 var userLng;
-var cities;
+var userMarker;
+var cityMarker;
+var cities = L.featureGroup();
 var singleCity;
 
 // Display loader until page is ready
@@ -16,7 +18,7 @@ $(document).ready(() => {
   const successCallback = (position) => {
     userLat = position.coords.latitude;
     userLng = position.coords.longitude;
-    L.marker([userLat, userLng], {
+    userMarker = L.marker([userLat, userLng], {
       icon: userIcon,
     })
       .bindPopup("You are here!")
@@ -226,13 +228,13 @@ $(document).ready(() => {
           }).addTo(mymap);
           mymap.fitBounds(border.getBounds());
 
-          if (mymap.hasLayer(cities)) {
-            mymap.removeLayer(cities);
-          }
+          cities.eachLayer(function (layer) {
+            cities.removeLayer(layer);
+          });
 
           if (result["geoNames"]["cities"] != null) {
             result["geoNames"]["cities"].forEach((city) => {
-              var cityMarker = L.marker([city.lat, city.lng], {
+              cityMarker = L.marker([city.lat, city.lng], {
                 icon: cityIcon,
               }).bindPopup(
                 `<b class="popupTitle">${city.name}</b><br>Population: ${Number(
@@ -242,7 +244,7 @@ $(document).ready(() => {
                 }">Wikipedia</a>`
               );
 
-              cities = L.featureGroup([cityMarker]).addTo(mymap);
+              cities.addLayer(cityMarker).addTo(mymap);
             });
           }
 
@@ -548,13 +550,21 @@ $("#selectCountry").change(function () {
       console.log(result);
 
       if (result.status.name == "ok") {
-        if (cities != null) {
-          mymap.removeLayer(cities);
+        if (mymap.hasLayer(singleCity)) {
+          mymap.removeLayer(singleCity);
         }
+
+        if (mymap.hasLayer(userMarker)) {
+          mymap.removeLayer(userMarker);
+        }
+
+        cities.eachLayer(function (layer) {
+          cities.removeLayer(layer);
+        });
 
         if (result["geoNames"]["cities"] != null) {
           result["geoNames"]["cities"].forEach((city) => {
-            var cityMarker = L.marker([city.lat, city.lng], {
+            cityMarker = L.marker([city.lat, city.lng], {
               icon: cityIcon,
             }).bindPopup(
               `<b class="popupTitle">${city.name}</b><br>Population: ${Number(
@@ -563,11 +573,8 @@ $("#selectCountry").change(function () {
                 city.wikipedia
               }">Wikipedia</a>`
             );
-            cities.eachLayer(function (layer) {
-              cities.removeLayer(layer);
-            });
 
-            cities = L.featureGroup([cityMarker]).addTo(mymap);
+            cities.addLayer(cityMarker).addTo(mymap);
           });
         } else {
           singleCity = L.marker(

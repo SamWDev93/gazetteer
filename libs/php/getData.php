@@ -241,7 +241,7 @@
 
     $news_decode = json_decode($news_result,true);
     $news = null;
-    if (!isset($news_decode['totalResults']) || $news_decode['status'] == "error") {
+    if (!isset($news_decode['totalResults']) || $news_decode['status'] == "error" || $news_decode['totalResults'] == 0) {
         $news = "N/A";
     } else {
     $news['firstTitle'] = $news_decode['articles'][0]['title'];
