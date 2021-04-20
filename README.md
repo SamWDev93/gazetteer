@@ -10,6 +10,7 @@ You can visit the live version [here.](https://gazetteer.samwelsh.co.uk/)
 
 * HTML5.
 * CSS3.
+* SASS.
 * Bootstrap.
 * JavaScript and jQuery for DOM manipulation / AJAX.
 * PHP / cURL.
