@@ -376,19 +376,19 @@ var Jawg_Streets = L.tileLayer(
 );
 
 var issIcon = L.icon({
-  iconUrl: "./libs/images/iss.png",
+  iconUrl: "./img/iss.png",
   iconSize: [100, 50],
   iconAnchor: [50, 25],
 });
 
 var userIcon = L.icon({
-  iconUrl: "./libs/images/user-marker.png",
+  iconUrl: "./img/user-marker.png",
   iconSize: [50, 50],
   iconAnchor: [25, 25],
 });
 
 var cityIcon = L.icon({
-  iconUrl: "./libs/images/city-marker.png",
+  iconUrl: "./img/city-marker.png",
   iconSize: [50, 50],
   iconAnchor: [25, 25],
 });
